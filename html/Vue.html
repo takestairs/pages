@@ -21,7 +21,7 @@
         }
         function query(){
             let api = {}
-            console.log("querying...");
+            // console.log("querying...");
 
             $.ajax({
                 type : "GET"
@@ -29,13 +29,13 @@
                 ,data : "_="+ new Date().getTime()
                 ,async : false
                 ,success : function(json){
-                    console.log(json);
-                    debugger
+                    // console.log(json);
+                    // debugger
                     api = json
                 }
             })
-            debugger
-            console.log(api);
+            // debugger
+            // console.log(api);
 
             return api;
         }
@@ -60,7 +60,16 @@
             methods: {
                 check(){
                     this.comfirm = checkQuestion(this.question);
-                    if(this.comfirm == "正在思考") {
+                    
+                }
+                ,clear(){
+                    this.comfirm = "";
+                    this.gif = ""
+                }
+            },
+            watch: {
+                comfirm : function(newC, oldC){
+                    if(newC == "正在思考") {
                         let ans = query()
                         // ans = {
                         //     "answer": "no",
@@ -71,11 +80,7 @@
                         this.gif = ans.image;
                     }
                 }
-                ,clear(){
-                    this.comfirm = "";
-                    this.gif = ""
-                }
-            },
+            }
         })
     </script>
 </body>
