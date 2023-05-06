@@ -39,7 +39,7 @@
 
     <h2>问一个问题，以“?”结尾</h2>
     <div id="app">
-        <input type="text" v-model="question" placeholder="你想问什么？" @blur="check" @focus="clear">
+        <input type="text" v-model="question" placeholder="你想问什么？" @blur="check" @focus="clear" @keydown.enter="check">
         <h4>{{comfirm}}</h4>
         <br>
         <img :src="gif">
@@ -64,6 +64,7 @@
             },
             watch: {
                 comfirm : function(newC, oldC){
+                    // this.comfirm == newC
                     if(newC == "正在思考") {
                         let ans = query()
                         this.comfirm = ans.answer;
