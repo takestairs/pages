@@ -11,9 +11,10 @@
     <script>
         function checkQuestion(question){
             // question = "aaa"
+            let c = question.charAt(question.length-1);
             if(question.length < 2){
                 return "问题太短";
-            } else if (question.indexOf("?") * question.indexOf("？") != 1) {
+            } else if (c == '?' || c == "？") {
                 return "正在思考";
             } else {
                 return "请以?结尾哦";
@@ -21,8 +22,6 @@
         }
         function query(){
             let api = {}
-            // console.log("querying...");
-
             $.ajax({
                 type : "GET"
                 ,url : "https://yesno.wtf/api"
@@ -34,9 +33,6 @@
                     api = json
                 }
             })
-            // debugger
-            // console.log(api);
-
             return api;
         }
     </script>
@@ -60,7 +56,6 @@
             methods: {
                 check(){
                     this.comfirm = checkQuestion(this.question);
-                    
                 }
                 ,clear(){
                     this.comfirm = "";
@@ -71,13 +66,13 @@
                 comfirm : function(newC, oldC){
                     if(newC == "正在思考") {
                         let ans = query()
+                        this.comfirm = ans.answer;
+                        this.gif = ans.image;
                         // ans = {
                         //     "answer": "no",
                         //     "forced": false,
                         //     "image": "https://yesno.wtf/assets/no/30-d37eee83c3c2180de4edb7da6fa9f5b7.gif"
                         // }
-                        this.comfirm = ans.answer;
-                        this.gif = ans.image;
                     }
                 }
             }
