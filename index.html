@@ -24,6 +24,7 @@
         <br>
         <div style="text-align: right;">{{author}}</div>
     </div>
+    <button id="btn">换一句</button>
 </body>
 <script>
     const vm = new Vue({
@@ -49,5 +50,10 @@
         }
     })
     vm.getCont();
+    $(function(){
+        $("#btn").click(function(){
+            vm.getCont()
+        })
+    })
 </script>
 </html>
