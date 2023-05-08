@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Document</title>
+
+    <script src="https://v2.cn.vuejs.org/js/vue.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 </head>
 <body>
     <h1>Links</h1>
@@ -14,5 +18,36 @@
         <!-- <li><a href="https://chatgpt.274452.xyz">GPT网页端。</a>访问密码：2744521870，6月1号可能就关了</li> -->
         <!-- <li><a href="https://alist.274452.xyz">个人用，放出部分资源，需要自取</a></li> -->
     </ol>
+    <hr>
+    <div id="app">
+        <span>{{content}}</span>
+        <br>
+        <div style="text-align: right;">{{author}}</div>
+    </div>
 </body>
+<script>
+    const vm = new Vue({
+        el : '#app',
+        data : {
+            content : ""
+            ,author: ""
+        },
+        methods: {
+            getCont(){
+                let vm = this;
+                $.ajax({
+                    type:"GET"
+                    ,url: "https://api.quotable.io/random"
+                    ,data : "_="+ new Date().getTime()
+                    ,async : true
+                    ,success : function(json){
+                        vm.content = json.content;
+                        vm.author = "——"+json.author;
+                    }
+                })
+            }
+        }
+    })
+    vm.getCont();
+</script>
 </html>
