@@ -54,7 +54,13 @@
             ,async : false
             ,success : function(json){
                 res.content = json.hitokoto;
-                res.author = json.from+" by "+(json.from_who==null? "佚名":json.from_who);
+                let suffix = json.from_who;
+                if(suffix == null || suffix == "佚名") {
+                    suffix = "";
+                } else {
+                    suffix = " by "+suffix;
+                }
+                res.author = json.from + suffix;
             }
         })
         return res;
