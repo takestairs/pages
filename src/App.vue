@@ -1,5 +1,6 @@
 <template>
     <div>
+        <p>Github 仓库地址: <a href="https://github.com/takestairs/pages">https://github.com/takestairs/pages</a></p>
         <input type="checkbox" :checked="getProto('Static')" @change="reverseProto('Static')">Static<br>
         <template v-if="getProto('Static')">
             <h3>一些纯html静态页面，放网络资源或者笔记。</h3>
