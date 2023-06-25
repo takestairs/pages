@@ -1,10 +1,13 @@
 <template>
     <div>
-        <div>一些纯html静态页面，放网络资源或者笔记。</div>
-        <ol>
-            <li><a href="./html/static/MOOC.html">安全与急救</a>dddd</li>
-            <li><a href="./html/static/直线与圆锥曲线.html">数学三：直线与圆锥曲线</a></li>
-        </ol>
+        <input type="checkbox" :checked="getProto('Static')" @change="reverseProto('Static')">Static<br>
+        <template v-if="getProto('Static')">
+            <h3>一些纯html静态页面，放网络资源或者笔记。</h3>
+            <ol>
+                <li><a href="./html/static/MOOC.html">安全与急救</a>dddd</li>
+                <li><a href="./html/static/直线与圆锥曲线.html">数学三：直线与圆锥曲线</a></li>
+            </ol>
+        </template>
         <hr>
 
         <input type="checkbox" :checked="getProto('YesOrNo')" @change="reverseProto('YesOrNo')">YesOrNo<br>
@@ -17,7 +20,7 @@
         <hr>
         <input type="checkbox" :checked="getProto('OneSentence')" @change="reverseProto('OneSentence')">OneSentence<br>
         <OneSentence v-if="getProto('OneSentence')"></OneSentence>
-        
+
         <hr>
         <input type="checkbox" :checked="getProto('SimpleGPT')" @change="reverseProto('SimpleGPT')">SimpleGPT<br>
         <SimpleGPT v-if="getProto('SimpleGPT')"></SimpleGPT>
@@ -35,6 +38,8 @@ export default {
     data(){
         return {
             enableComponent : {
+                "Static" : false,
+
                 "OneSentence" : true,
                 "YesOrNo" : false,
                 "FormCollect" : false,
