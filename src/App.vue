@@ -1,0 +1,60 @@
+<template>
+    <div>
+        <div>一些纯html静态页面，放网络资源或者笔记。</div>
+        <ol>
+            <li><a href="./html/static/MOOC.html">安全与急救</a>dddd</li>
+            <li><a href="./html/static/直线与圆锥曲线.html">数学三：直线与圆锥曲线</a></li>
+        </ol>
+        <hr>
+
+        <input type="checkbox" :checked="getProto('YesOrNo')" @change="reverseProto('YesOrNo')">YesOrNo<br>
+        <YesOrNo v-if="getProto('YesOrNo')"></YesOrNo>
+        <hr>
+
+        <input type="checkbox" :checked="getProto('FormCollect')" @change="reverseProto('FormCollect')">FormCollect<br>
+        <FormCollect v-if="getProto('FormCollect')"></FormCollect>
+
+        <hr>
+        <input type="checkbox" :checked="getProto('OneSentence')" @change="reverseProto('OneSentence')">OneSentence<br>
+        <OneSentence v-if="getProto('OneSentence')"></OneSentence>
+        
+        <hr>
+        <input type="checkbox" :checked="getProto('SimpleGPT')" @change="reverseProto('SimpleGPT')">SimpleGPT<br>
+        <SimpleGPT v-if="getProto('SimpleGPT')"></SimpleGPT>
+    </div>
+</template>
+
+<script>
+
+import FormCollect from './components/FormCollect.vue'
+import YesOrNo from './components/YesOrNo.vue'
+import OneSentence from './components/OneSentence.vue'
+import SimpleGPT from './components/SimpleGPT.vue'
+
+export default {
+    data(){
+        return {
+            enableComponent : {
+                "OneSentence" : true,
+                "YesOrNo" : false,
+                "FormCollect" : false,
+                'SimpleGPT' : true
+            }
+        }
+    },
+    components : {
+        SimpleGPT,
+        YesOrNo,
+        FormCollect,
+        OneSentence
+    },
+    methods : {
+        reverseProto(proto){
+            this.enableComponent[proto]=!this.enableComponent[proto]
+        },
+        getProto(proto){
+            return this.enableComponent[proto]
+        }
+    }
+}
+</script>
