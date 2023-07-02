@@ -1,7 +1,7 @@
 <template>
     <div v-if="messageObj">
-        <h3 :class="name">{{name}}</h3>
-        <p class="content">{{messageObj.content}}</p>
+        <span :class="name">{{name}}</span>
+        <span class="content">{{messageObj.content}}</span>
     </div>
 </template>
 
@@ -27,11 +27,13 @@ export default {
 <style scoped>
     .GPT {
         color: aqua;
-        text-align: left;        
+        text-align: left;
     }
-
     .User {
         color: cadetblue;
         text-align: left;
-    }    
+    }
+    .content{
+        color: black;
+    }
 </style>
