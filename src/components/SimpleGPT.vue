@@ -42,7 +42,7 @@ export default {
         },
         ask(){
             $.post({
-                url : "http://[2001:470:1f21:114::87]/v1/chat/completions",
+                url : "https://api-gpt.274452.eu.org/v1/chat/completions",
                 data :
                 `{
                     "model": "text-davinci-002-render-sha",
