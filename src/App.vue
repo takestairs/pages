@@ -24,7 +24,7 @@
 
         <hr>
         <input type="checkbox" :checked="getProto('SimpleGPT')" @change="reverseProto('SimpleGPT')">SimpleGPT<br>
-        <SimpleGPT v-if="getProto('SimpleGPT')"></SimpleGPT>
+        <SimpleGPT v-show="getProto('SimpleGPT')"></SimpleGPT><!--v-show 缓存当前历史聊天-->
     </div>
 </template>
 
