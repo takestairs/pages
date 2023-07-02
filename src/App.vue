@@ -29,7 +29,6 @@
 </template>
 
 <script>
-
 import FormCollect from './components/FormCollect.vue'
 import YesOrNo from './components/YesOrNo.vue'
 import OneSentence from './components/OneSentence.vue'
