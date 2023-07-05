@@ -10,6 +10,7 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "jquery": "^3.7.0",
+    "marked": "^5.1.0",
     "vue": "^2.6.14"
   },
   "devDependencies": {

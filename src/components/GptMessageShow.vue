@@ -1,11 +1,12 @@
 <template>
-    <div v-if="messageObj">
+    <span v-if="messageObj">
         <span :class="name">{{name}}</span>
-        <span class="content">{{messageObj.content}}</span>
-    </div>
+        <div class="content" v-html="contentHTML"></div>
+    </span>
 </template>
 
 <script>
+const marked = require('marked');
 export default {
     data(){
         return {
@@ -19,6 +20,9 @@ export default {
     computed : {
         name(){
             return this.roleName[this.messageObj.role]
+        },
+        contentHTML(){
+            return marked.parse(this.messageObj.content)
         }
     }
 }
@@ -33,7 +37,7 @@ export default {
         color: cadetblue;
         text-align: left;
     }
-    .content{
-        color: black;
-    }
+    /* .content{
+
+    } */
 </style>
