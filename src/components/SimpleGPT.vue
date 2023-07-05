@@ -1,14 +1,14 @@
 <template>
     <div>
         <h2>SimpleGPT</h2>
-        <p>使用网页逆向API搭建，使用access_token。支持历史记录，但不支持缓存（cookie），刷新就没了。</p>
+        <p>使用网页逆向API搭建，使用access_token。支持历史记录（使用cookie）</p>
         <div class="settings">
             请求携带的历史消息数：<input type="number" v-model="historyInfo.maxSendingLength" style="width:30px">
             <!-- TODO：支持选择性地保存与删除聊天记录 -->
 
             <br><!-- 聊天记录的保存与删除 -->
-            <button @click='saveHistory'>保存历史聊天至本地（使用cookie）</button>
-            <button @click='deleteHistory'>删除本地聊天记录（删除cookie）</button>
+            <button @click='saveHistory'>保存历史聊天至本地</button>
+            <button @click='deleteHistory'>删除本地聊天记录</button>
         </div>
 
         <br>
