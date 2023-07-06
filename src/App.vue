@@ -3,10 +3,10 @@
         <p>Github 仓库地址: <a href="https://github.com/takestairs/pages">https://github.com/takestairs/pages</a></p>
         <p>我知道页面粗糙，css太难写了，作为练习凑合吧。</p>
         
-        <input type="checkbox" :checked="getProto('DayNightToogleButton')" @change="reverseProto('DayNightToogleButton')">日夜模式开关（不适用手机端）<br>
+        <input type="checkbox" :checked="getProto('DayNightToogleButton')" @change="reverseProto('DayNightToogleButton')">日夜模式开关（不适用手机端），
+        原作者仓库：<a href="https://github.com/Xiumuzaidiao/Day-night-toggle-button">https://github.com/Xiumuzaidiao/Day-night-toggle-button</a>
         <DayNightToogleButton v-show="getProto('DayNightToogleButton')"></DayNightToogleButton>
-        
-        <br>
+        <br><br>
 
         <input type="checkbox" :checked="getProto('Static')" @change="reverseProto('Static')">Static<br>
         <template v-if="getProto('Static')">
