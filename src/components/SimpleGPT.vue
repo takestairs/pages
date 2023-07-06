@@ -7,8 +7,8 @@
             <GptMessageShow :messageObj="message"></GptMessageShow>
         </div>
 
-        <input type="textarea" v-model="question" placeholder="试一下，反正free。shift+enter快捷发送" @keydown.shift.enter="ask"><button @click="ask">ASK</button>
-        <h3>{{status}}</h3>
+        <input type="textarea" v-model="question" placeholder="试一下，反正free。shift+enter快捷发送" @keydown.shift.enter="ask">
+        <button @click="ask">ASK</button><h3>{{status}}</h3>
         <div class="settings">
             请求携带的历史消息数：<input type="number" v-model="historyInfo.maxSendingLength">
             <!-- TODO：支持选择性地保存与删除聊天记录 -->
@@ -119,10 +119,16 @@ export default {
         // 保存历史记录
         saveHistory(){
             localStorage.setItem("history", JSON.stringify(this.historyInfo))
+            window.alert("已保存")
         },
         // 删除历史记录
         deleteHistory(){
-            localStorage.clear()
+            if(window.confirm("确定删除吗？")){
+                localStorage.clear()
+                window.alert("已删除")
+                return;
+            }
+            window.alert("已取消")
         },
         // 解析历史记录，无历史记录时返回默认值
         getHistory(){
@@ -177,13 +183,13 @@ export default {
     h3 {
         font-size: 18px;
         margin-top: 10px;
+        display: inline;
     }
     p {
         color: #666;
         font-size: 16px;
         margin-bottom: 10px;
     }
-
     input[type="number"] {
         width: 50px;
         padding: 5px;
@@ -205,6 +211,7 @@ export default {
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        margin-right: 10px;
     }
 
     .message {
