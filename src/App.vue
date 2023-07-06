@@ -10,6 +10,7 @@
                 <li><a href="./html/static/直线与圆锥曲线.html">数学三：直线与圆锥曲线</a></li>
             </ol>
         </template>
+        <DayNightToogleButton></DayNightToogleButton>
         <hr>
 
         <input type="checkbox" :checked="getProto('YesOrNo')" @change="reverseProto('YesOrNo')">YesOrNo<br>
@@ -34,6 +35,7 @@ import FormCollect from './components/FormCollect.vue'
 import YesOrNo from './components/YesOrNo.vue'
 import OneSentence from './components/OneSentence.vue'
 import SimpleGPT from './components/SimpleGPT.vue'
+import DayNightToogleButton from './components/DayNightToogleButton.vue'
 
 export default {
     data(){
@@ -52,7 +54,8 @@ export default {
         SimpleGPT,
         YesOrNo,
         FormCollect,
-        OneSentence
+        OneSentence,
+        DayNightToogleButton
     },
     methods : {
         reverseProto(proto){
