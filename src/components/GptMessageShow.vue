@@ -29,15 +29,16 @@ export default {
 </script>
 
 <style scoped>
-    .GPT {
-        color: aqua;
-        text-align: left;
-    }
     .User {
-        color: cadetblue;
-        text-align: left;
+        color: #333;
+        font-weight: bold;
     }
-    .content{
+    .GPT {
+        color: #337ab7;
+        font-weight: bold;        
+    }
+    .content {
+        margin-top: 5px;
         width: auto;
     }
 </style>

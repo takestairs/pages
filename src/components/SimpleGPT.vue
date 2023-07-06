@@ -1,24 +1,22 @@
 <template>
-    <div>
+    <div class="container">
         <h2>SimpleGPT</h2>
         <p>使用网页逆向API搭建，使用access_token。支持历史记录（使用LocalStorage）</p>
+        <div v-for="(message, index) in historyInfo.messages" :key="index" @change="isAllMessageChecked" class="message">
+            <input type="checkbox" class="messageCheck" v-show="false"><!-- 待办，先隐藏 -->
+            <GptMessageShow :messageObj="message"></GptMessageShow>
+        </div>
+
+        <input type="textarea" v-model="question" placeholder="试一下，反正free。shift+enter快捷发送" @keydown.shift.enter="ask"><button @click="ask">ASK</button>
+        <h3>{{status}}</h3>
         <div class="settings">
-            请求携带的历史消息数：<input type="number" v-model="historyInfo.maxSendingLength" style="width:30px">
+            请求携带的历史消息数：<input type="number" v-model="historyInfo.maxSendingLength">
             <!-- TODO：支持选择性地保存与删除聊天记录 -->
 
             <br><!-- 聊天记录的保存与删除 -->
             <button @click='saveHistory'>保存历史聊天至本地</button>
             <button @click='deleteHistory'>删除本地聊天记录</button>
         </div>
-
-        <br>
-        <div v-for="(message, index) in historyInfo.messages" :key="index" @change="isAllMessageChecked">
-            <input type="checkbox" class="messageCheck" v-show="false"><!-- 待办，先隐藏 -->
-            <GptMessageShow :messageObj="message"></GptMessageShow>
-        </div>
-
-        <input type="text" v-model="question" placeholder="试一下，反正free" @keydown.enter="ask"><button @click="ask">ASK</button>
-        <h3>{{status}}</h3>
     </div>
 </template>
 
@@ -163,6 +161,60 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+    .container {
+        /* max-width: 600px; */
+        margin: 0 auto;
+        padding: 20px;
+    }
 
+    h2 {
+        color: #333;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    h3 {
+        font-size: 18px;
+        margin-top: 10px;
+    }
+    p {
+        color: #666;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    input[type="number"] {
+        width: 50px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    input[type="textarea"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-top: 20px;
+    }
+    button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #337ab7;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .message {
+        margin-top: 20px;
+        background-color: #f5f5f5;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .settings {
+        margin-top: 20px;
+    }
 </style>
