@@ -2,6 +2,12 @@
     <div>
         <p>Github 仓库地址: <a href="https://github.com/takestairs/pages">https://github.com/takestairs/pages</a></p>
         <p>我知道页面粗糙，css太难写了，作为练习凑合吧。</p>
+        
+        <input type="checkbox" :checked="getProto('DayNightToogleButton')" @change="reverseProto('DayNightToogleButton')">日夜模式开关（不适用手机端）<br>
+        <DayNightToogleButton v-show="getProto('DayNightToogleButton')"></DayNightToogleButton>
+        
+        <br>
+
         <input type="checkbox" :checked="getProto('Static')" @change="reverseProto('Static')">Static<br>
         <template v-if="getProto('Static')">
             <h3>一些纯html静态页面，放网络资源或者笔记。</h3>
@@ -10,7 +16,6 @@
                 <li><a href="./html/static/直线与圆锥曲线.html">数学三：直线与圆锥曲线</a></li>
             </ol>
         </template>
-        <DayNightToogleButton></DayNightToogleButton>
         <hr>
 
         <input type="checkbox" :checked="getProto('YesOrNo')" @change="reverseProto('YesOrNo')">YesOrNo<br>
@@ -42,7 +47,7 @@ export default {
         return {
             enableComponent : {
                 "Static" : false,
-
+                "DayNightToogleButton" : false,
                 "OneSentence" : true,
                 "YesOrNo" : false,
                 "FormCollect" : false,
