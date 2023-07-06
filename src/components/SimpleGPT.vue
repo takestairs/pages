@@ -2,13 +2,15 @@
     <div class="container">
         <h2>SimpleGPT</h2>
         <p>使用网页逆向API搭建，使用access_token。支持历史记录（使用LocalStorage）</p>
+
         <div v-for="(message, index) in historyInfo.messages" :key="index" @change="isAllMessageChecked" class="message">
             <input type="checkbox" class="messageCheck" v-show="false"><!-- 待办，先隐藏 -->
             <GptMessageShow :messageObj="message"></GptMessageShow>
         </div>
 
-        <input type="textarea" v-model="question" placeholder="试一下，反正free。shift+enter快捷发送" @keydown.shift.enter="ask">
+        <textarea rows="5" v-model="question" placeholder="试一下，反正free。shift+enter快捷发送" @keydown.shift.enter="ask"></textarea>
         <button @click="ask">ASK</button><h3>{{status}}</h3>
+
         <div class="settings">
             请求携带的历史消息数：<input type="number" v-model="historyInfo.maxSendingLength">
             <!-- TODO：支持选择性地保存与删除聊天记录 -->
@@ -196,12 +198,14 @@ export default {
         border: 1px solid #ccc;
         border-radius: 4px;
     }
-    input[type="textarea"] {
+    textarea {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
         margin-top: 20px;
+        resize: vertical;
+
     }
     button {
         margin-top: 10px;
@@ -215,6 +219,7 @@ export default {
     }
 
     .message {
+        width: 100%;
         margin-top: 20px;
         background-color: #f5f5f5;
         padding: 10px;
