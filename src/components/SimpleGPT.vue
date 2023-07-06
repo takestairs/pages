@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>SimpleGPT</h2>
-        <p>使用网页逆向API搭建，使用access_token。支持历史记录（使用cookie）</p>
+        <p>使用网页逆向API搭建，使用access_token。支持历史记录（使用LocalStorage）</p>
         <div class="settings">
             请求携带的历史消息数：<input type="number" v-model="historyInfo.maxSendingLength" style="width:30px">
             <!-- TODO：支持选择性地保存与删除聊天记录 -->
@@ -57,12 +57,7 @@ export default {
         }
     },
     mounted(){
-        // 读取cookie，解析历史聊天记录
-        let history = document.cookie
-        history = history.replace("HistoryMessages=","")
-        if(history.length!=0){
-            this.historyInfo = JSON.parse(history)
-        }
+        this.historyInfo = this.getHistory()
     },
     components : {
         // 用以展示一条message的组件
@@ -93,7 +88,7 @@ export default {
             // 1. 修改状态，提示用户
             this.status = "GPT思考中..."
             // 当用户输入有效时，将用户输入追加到历史消息末尾，同时清空用户输入
-            if(this.question.trim()!==""){
+            if(this.question.trim()!=""){
                 // 2. 存储用户输入至历史记录
                 let userMessage = {
                     role : "user",
@@ -123,20 +118,33 @@ export default {
                 }
             })
         },
+        // 保存历史记录
+        saveHistory(){
+            localStorage.setItem("history", JSON.stringify(this.historyInfo))
+        },
+        // 删除历史记录
+        deleteHistory(){
+            localStorage.clear()
+        },
+        // 解析历史记录，无历史记录时返回默认值
+        getHistory(){
+            let localHistory = JSON.parse(localStorage.getItem("history"));
+            if(!localHistory){
+                // 本地历史为空，返回默认值
+                return {
+                    messages : [],
+                    maxSendingLength : 5,
+                }
+            }
+            return localHistory;
+        },
+        // @NotUsed
         // 全选或取消全选 消息框
         selectAll(){
             if(!this.isAllMessageChecked()){
                 $(".messageCheck").attr("checked",true)
             }
         },
-        saveHistory(){
-            document.cookie = "HistoryMessages="+JSON.stringify(this.historyInfo)
-            console.log("new cookie: ",document.cookie);
-        },
-        deleteHistory(){
-            document.cookie = "HistoryMessages= ; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-        },
-        // @NotUsed
         // 是否全部消息复选框已勾选，返回 true | false。作为计算属性无效？
         // 附带修改全选按钮文本
         isAllMessageChecked(){

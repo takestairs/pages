@@ -37,7 +37,7 @@ export default {
         color: cadetblue;
         text-align: left;
     }
-    /* .content{
-
-    } */
+    .content{
+        width: auto;
+    }
 </style>
