@@ -24,23 +24,29 @@
 
         <input type="checkbox" :checked="getProto('FormCollect')" @change="reverseProto('FormCollect')">FormCollect<br>
         <FormCollect v-if="getProto('FormCollect')"></FormCollect>
-
         <hr>
+
         <input type="checkbox" :checked="getProto('OneSentence')" @change="reverseProto('OneSentence')">OneSentence<br>
         <OneSentence v-if="getProto('OneSentence')"></OneSentence>
-
         <hr>
+
         <input type="checkbox" :checked="getProto('SimpleGPT')" @change="reverseProto('SimpleGPT')">SimpleGPT<br>
         <SimpleGPT v-if="getProto('SimpleGPT')"></SimpleGPT>
+        <hr>
+
+        <input type="checkbox" :checked="getProto('WeatherReport')" @change="reverseProto('WeatherReport')">天气情况<br>
+        <WeatherReport v-show="getProto('WeatherReport')"></WeatherReport>
+
     </div>
 </template>
 
 <script>
-import FormCollect from './components/FormCollect.vue'
-import YesOrNo from './components/YesOrNo.vue'
-import OneSentence from './components/OneSentence.vue'
-import SimpleGPT from './components/SimpleGPT.vue'
 import DayNightToogleButton from './components/DayNightToogleButton.vue'
+import OneSentence from './components/OneSentence.vue'
+import YesOrNo from './components/YesOrNo.vue'
+import FormCollect from './components/FormCollect.vue'
+import SimpleGPT from './components/SimpleGPT.vue'
+import WeatherReport from './components/WeatherReport.vue'
 
 export default {
     data(){
@@ -51,7 +57,8 @@ export default {
                 "OneSentence" : true,
                 "YesOrNo" : false,
                 "FormCollect" : false,
-                'SimpleGPT' : true
+                'SimpleGPT' : false,
+                'WeatherReport' : true
             }
         }
     },
@@ -60,7 +67,8 @@ export default {
         YesOrNo,
         FormCollect,
         OneSentence,
-        DayNightToogleButton
+        DayNightToogleButton,
+        WeatherReport
     },
     methods : {
         reverseProto(proto){
