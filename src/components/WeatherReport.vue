@@ -57,7 +57,7 @@ export default {
     methods : {
         serchWeather(){
             // 1. 发起请求，获取经纬度
-            axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${this.userCityName}&limit=1&appid=${this.apikey}`).then(
+            axios.get(`https://api.openweathermap.org/geo/1.0/direct?q=${this.userCityName}&limit=1&appid=${this.apikey}`).then(
                 response => {
                     console.log(response);                    
                     this.lat = response.data[0].lat
