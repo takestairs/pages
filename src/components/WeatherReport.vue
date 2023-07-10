@@ -59,7 +59,7 @@ export default {
             // 1. 发起请求，获取经纬度
             axios.get(`https://api.openweathermap.org/geo/1.0/direct?q=${this.userCityName}&limit=1&appid=${this.apikey}`).then(
                 response => {
-                    console.log(response);                    
+                    // console.log(response);                    
                     this.lat = response.data[0].lat
                     this.lon = response.data[0].lon
 
@@ -73,7 +73,7 @@ export default {
         getWeatherInfo(){
             axios.get(`https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${this.lat}&lon=${this.lon}&appid=${this.apikey}`).then(
                 response => {
-                    console.log(response);
+                    // console.log(response);
                     this.icon = response.data.weather[0].icon
                     this.temp = response.data.main.temp + "°c"
                     this.humidity = response.data.main.humidity + "%"

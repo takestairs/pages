@@ -53,7 +53,8 @@ export default {
             datasets: [
                 {
                     data : [40,  59,  81],
-                    label : 'test'
+                    label : 'test',
+                    backgroundColor: ['rgb(75, 192, 192)','rgb(75, 252, 192)','rgb(75, 192, 0)']
                 }
             ]
         }
@@ -106,14 +107,16 @@ export default {
                 {
                     data:fvs_liner,
                     label : "累计本金",
-                    // borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    borderColor: 'rgb(0, 0, 0, 0.1)',
+                    tension: 0.1,
+                    backgroundColor : 'rgb(0, 0, 0, 0.1)'
                 },
                 {
                     data:fvs_rater,
                     label : "连带利息",
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    borderColor: 'rgb(75, 192, 192, 0.6)',
+                    tension: 0.1,                    
+                    backgroundColor : LabelsUtil.getArray(count+1,'rgb(75, 192, 192, 0.9)',[userData.monthNeeded],['rgb(255, 51, 51, 0.9)'])
                 }
             ]            
             chart.update()
@@ -129,10 +132,9 @@ export default {
     width: 70%;
     margin: 0 auto;
 }
-.settings > * {
+.settings > button {
     display: block;
-    text-align: center;
-    margin: 0 auto;
+    margin: 5px auto;
 }
 
 .output {
@@ -141,7 +143,8 @@ export default {
     margin: 0 auto;
     margin-top: 1%;
 }
-.output span {
+
+div > span {
     display: block;
     text-align: center;
     margin: 0 auto;

@@ -51,6 +51,24 @@ export default {
         }
         return res
     },
+    /**
+     * 获取带有默认值、指定值、元素个数的数组
+     * @param {number} count 元素数
+     * @param {*} defaultValue 默认值
+     * @param {number[]} specialIndexs 特定下标的数组
+     * @param {*} specialValues 特定下标对应的特定值
+     * @returns {any[]}
+     */
+    getArray(count, defaultValue, specialIndexs, specialValues){
+        let res = []
+        for(let i=1;i<=count;i++){
+            res.push(defaultValue)
+        }
+        for(let i in specialIndexs){
+            res[specialIndexs[i]] = specialValues[i]
+        }
+        return res
+    },
 
     /**
      * 直接给数组中的元素添加前后缀，无返回值
