@@ -6,7 +6,7 @@
 </template>
 
 <script>
-const marked = require('marked');
+import {marked} from 'marked'
 export default {
     data(){
         return {

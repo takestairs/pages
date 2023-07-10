@@ -36,7 +36,10 @@
 
         <input type="checkbox" :checked="getProto('WeatherReport')" @change="reverseProto('WeatherReport')">天气情况<br>
         <WeatherReport v-show="getProto('WeatherReport')"></WeatherReport>
+        <hr>
 
+        <input type="checkbox" :checked="getProto('DreamCometrueCaculator')" @change="reverseProto('DreamCometrueCaculator')">梦想成长计算器<br>
+        <DreamCometrueCaculator v-show="getProto('DreamCometrueCaculator')"></DreamCometrueCaculator>
     </div>
 </template>
 
@@ -47,6 +50,7 @@ import YesOrNo from './components/YesOrNo.vue'
 import FormCollect from './components/FormCollect.vue'
 import SimpleGPT from './components/SimpleGPT.vue'
 import WeatherReport from './components/WeatherReport.vue'
+import DreamCometrueCaculator from './components/DreamCometrueCalculator.vue';
 
 export default {
     data(){
@@ -57,8 +61,9 @@ export default {
                 "OneSentence" : true,
                 "YesOrNo" : false,
                 "FormCollect" : false,
-                'SimpleGPT' : false,
-                'WeatherReport' : true
+                'SimpleGPT' : true,
+                'WeatherReport' : false,
+                'DreamCometrueCaculator' : true
             }
         }
     },
@@ -68,7 +73,8 @@ export default {
         FormCollect,
         OneSentence,
         DayNightToogleButton,
-        WeatherReport
+        WeatherReport,
+        DreamCometrueCaculator
     },
     methods : {
         reverseProto(proto){

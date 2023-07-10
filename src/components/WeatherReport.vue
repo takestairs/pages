@@ -196,3 +196,9 @@ body {
     margin-top: -6px;
 }
 </style>
+
+<style>
+#app {
+    margin : 2%
+}
+</style>
