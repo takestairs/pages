@@ -100,7 +100,7 @@ export default {
             }
             // 4. 发起请求，从历史消息数组中解析需要发送的消息
             $.post({
-                url : "https://api-gpt.274452.eu.org/v1/chat/completions",
+                url : "https://274452.eu.org/v1/chat/completions",
                 data : this.requestBody,
                 // contentType : "application/json",
                 dataType : "json",

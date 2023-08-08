@@ -30,7 +30,7 @@
         <OneSentence v-if="getProto('OneSentence')"></OneSentence>
         <hr>
 
-        <input type="checkbox" :checked="getProto('SimpleGPT')" @change="reverseProto('SimpleGPT')">SimpleGPT（已失效）<br>
+        <input type="checkbox" :checked="getProto('SimpleGPT')" @change="reverseProto('SimpleGPT')">SimpleGPT（已复活）<br>
         <SimpleGPT v-if="getProto('SimpleGPT')"></SimpleGPT>
         <hr>
 
