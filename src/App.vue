@@ -30,7 +30,7 @@
         <OneSentence v-if="getProto('OneSentence')"></OneSentence>
         <hr>
 
-        <input type="checkbox" :checked="getProto('SimpleGPT')" @change="reverseProto('SimpleGPT')">SimpleGPT（已复活）<br>
+        <input type="checkbox" :checked="getProto('SimpleGPT')" @change="reverseProto('SimpleGPT')">SimpleGPT（接口已下线，有需要联系我）<br>
         <SimpleGPT v-if="getProto('SimpleGPT')"></SimpleGPT>
         <hr>
 
@@ -38,7 +38,7 @@
         <WeatherReport v-show="getProto('WeatherReport')"></WeatherReport>
         <hr>
 
-        <input type="checkbox" :checked="getProto('DreamCometrueCaculator')" @change="reverseProto('DreamCometrueCaculator')">梦想成长计算器<br>
+        <input type="checkbox" :checked="getProto('DreamCometrueCaculator')" @change="reverseProto('DreamCometrueCaculator')">梦想成真计算器<br>
         <DreamCometrueCaculator v-show="getProto('DreamCometrueCaculator')"></DreamCometrueCaculator>
     </div>
 </template>
