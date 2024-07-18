@@ -32,7 +32,7 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale
 
 import { computed, reactive, ref } from 'vue';
 
-import LabelsUtil from '../utils/Labels.js'
+import LabelsUtil from '../util/Labels.js'
 
 export default {
     name : "DreamCometrueCaculator",

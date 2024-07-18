@@ -1,93 +1,79 @@
 <template>
     <div>
-        <div>{{content}}</div>
-        <div style="text-align: right;">{{author}}</div>
-        <button @click=getCont>换一句</button>&nbsp;&nbsp;&nbsp;
-        <button @click="changeLang">换种语言</button>
+        <div>{{ content }}</div>
+        <div id="author">{{ author }}</div>
+        <button @click=updateSentence>换一句</button>&nbsp;&nbsp;&nbsp;
+        <select v-model="lang" @change=updateSentence>
+            <option>zh</option>
+            <option>en</option>
+        </select>
     </div>
 </template>
 
 <script>
-import $ from 'jquery'
+import axios from 'axios'
 
 export default {
-    data(){
+    data() {
         return {
-            content : ""
-            ,author: ""
-            ,lang : "zh"
-            ,supported_lang : ["zh","en"]
+            content: "",
+            author: "",
+            lang: "zh"
         }
     },
-    mounted(){
-        this.getCont()
+    mounted() {
+        this.updateSentence()
     },
     methods: {
-        getCont(){
-            let lang = this.lang;
-            if(lang == "zh") {
-                this.explain(this.getChinese());
-            } else if(lang = "en"){
-                this.explain(this.getEnglish());
+        updateSentence() {
+            if (this.lang == "zh") {
+                this.getChineseContent().then(s => {
+                    this.content = s.content
+                    this.author = s.author
+                })
+            } else if (this.lang = "en") {
+                this.getEnglishContent().then(s => {
+                    this.content = s.content
+                    this.author = s.author
+                })
             } else {
-                this.explain(this.getError());
+                const s = { content: "未知语言", author: "" }
+                this.content = s.content
+                this.author = s.author
             }
-        }
-        ,getEnglish(){
-            let res = {content:"",author:""};
-            $.ajax({
-                type:"GET"
-                ,url: "https://api.quotable.io/random"
-                ,data : "_="+ new Date().getTime()
-                ,async : false
-                ,success : function(json){
-                    res.content = json.content;
-                    res.author = "——"+json.author;
-                }
-            })
-            return res;
-        }
-        ,getChinese(){
-            let res = {content:"",author:""};
-            $.ajax({
-                type:"GET"
-                ,url: "https://v1.hitokoto.cn"
-                ,data : "_="+ new Date().getTime()
-                ,async : false
-                ,success : function(json){
-                    res.content = json.hitokoto;
-                    let suffix = json.from_who;
-                    if(suffix == null || suffix == "佚名") {
-                        suffix = "";
-                    } else {
-                        suffix = " by "+suffix;
-                    }
-                    res.author = json.from + suffix;
-                }
-            })
-            return res;
-        }
-        ,getError(){
-            return {
-                content:"出错了"
-                ,author:"稍后再试吧"
+        },
+        async getEnglishContent() {
+            try {
+                const res = await axios.get(`https://api.quotable.io/random?_=${new Date().getTime()}`);
+                const data = res.data;
+                return { content: data.content, author: "by " + data.author };
+            } catch (error) {
+                console.error(error);
+                return { content: "Error, try again.", author: "" };
             }
-        }
-        ,explain(response){
-            this.content = response.content;
-            this.author = response.author;
-        }
-        ,changeLang(){
-            let langlist = this.supported_lang;
-            while(true){
-                let index = Number.parseInt(Math.random()*langlist.length);
-                if(langlist[index] != this.lang) {
-                    this.lang = langlist[index];
-                    this.getCont()
-                    break;
+        },
+        async getChineseContent() {
+            try {
+                const r = await axios.get(`https://v1.hitokoto.cn?_=${new Date().getTime()}`);
+                const data = r.data;
+                let suffix = data.from_who;
+                if (suffix == null || suffix === "佚名" || suffix === "原创") {
+                    suffix = "";
+                } else {
+                    suffix = " by " + suffix;
                 }
+                return { content: data.hitokoto, author: data.from + suffix };
+            } catch (error) {
+                console.error(error);
+                return { content: "出错了，请重试。", author: "" };
             }
         }
     }
 }
 </script>
+
+<style>
+#author {
+    text-align: right;
+}
+</style>

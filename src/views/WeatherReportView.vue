@@ -2,7 +2,7 @@
      <div class="card">
         <div class="search">
             <input type="text" placeholder="请输入城市名字" spellcheck="false" v-model="userCityName">
-            <button @click="serchWeather"><img src="./images/search.png"></button>
+            <button @click="serchWeather"><img src="/images/search.png"></button>
         </div>
         <div class="weather">
             <img :src="weatherIconSrc" class="weather-icon">
@@ -10,14 +10,14 @@
             <h2 class="city">{{cityName}}</h2>
             <div class="details">
                 <div class="col">
-                    <img src="./images/humidity.png" />
+                    <img src="/images/humidity.png" />
                     <div>
                         <p class="humidity">{{humidity}}</p>
                         <p>湿度</p>
                     </div>
                 </div>
                 <div class="col">
-                    <img src="./images/wind.png">
+                    <img src="/images/wind.png">
                     <div>
                         <p class="wind">{{windSpeed}}</p>
                         <p>风力</p>
@@ -34,8 +34,8 @@ export default {
     data() {
         return {
             userCityName : "赣州",
-            lon : 50,
-            lat : 50,
+            lon : 0,
+            lat : 0,
 
             cityName : "",
             icon : "",
@@ -68,7 +68,7 @@ export default {
                 error => {
                     console.log(error);
                 }
-            )            
+            )
         },
         getWeatherInfo(){
             axios.get(`https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${this.lat}&lon=${this.lon}&appid=${this.apikey}`).then(
@@ -97,7 +97,6 @@ export default {
 </script>
 
 <style scoped>
-/*公共样式*/
 *{
     margin: 0;
     padding: 0;
