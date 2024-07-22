@@ -2,8 +2,8 @@
     <button @click="checkAll">检查全部 token</button>
     <div><input v-model="newToken" /><button @click="addToken">添加</button></div>
     <div>
-        <input v-model="auth" />
-        <button @click="saveToken">保存token</button>
+        <input type="password" v-model="auth" />
+        <button @click="saveToken">保存</button>
         <label>{{ status.get("SAVE_TOKEN") }}</label>
     </div>
     <table>
@@ -64,8 +64,8 @@ function addToken() {
 
 function saveToken() {
     cacheStatusPromise("SAVE_TOKEN", axios.post("https://api.274452.xyz/upstash/plus", Array.from(plusTokens.value).map(token => LOGIN + token), {
-        headers: { "Authorization": auth.value }
-    }).then(r => r.statusText).catch(e => e))
+        headers: { "Authorization": auth.value, "Content-Type": "application/json" }
+    }).then(r => r.data.result).catch(e => e))
 }
 
 async function checkToken(token) {
