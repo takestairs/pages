@@ -10,11 +10,15 @@
             <RouterLink to="/form">表单收集 DEMO</RouterLink>
             <RouterLink to="/weather">天气查询</RouterLink>
             <RouterLink to="/ask">Yes or No</RouterLink>
-            
+            <RouterLink to="/fk">fk-token 管理</RouterLink>
         </nav>
 
         <main v-if="$route.fullPath !== '/'">
-            <RouterView />
+            <router-view v-slot="{ Component }">
+                <keep-alive>
+                    <component :is="Component" />
+                </keep-alive>
+            </router-view>
         </main>
 
         <OneSentence class="border" />
@@ -23,6 +27,7 @@
 <script setup>
 import OneSentence from "./components/OneSentence.vue"
 import DayNightModeButton from "./components/DayNightModeButton.vue"
+import { KeepAlive } from "vue";
 
 </script>
 
