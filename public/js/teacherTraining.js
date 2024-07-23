@@ -12,6 +12,7 @@
 
 (function () {
     'use strict';
+    const SKIP = false
 
     // console 输出代理控制 对象，只给往终端输出信息的函数加锁
     const console = (function () {
@@ -151,9 +152,10 @@
                     });
                     video.AUTO = true
                 }
-                video.dispatchEvent(new Event("ended"))
+                if (SKIP) {
+                    video.dispatchEvent(new Event("ended"))
+                }
             })
         }
     }))
-
 })();
