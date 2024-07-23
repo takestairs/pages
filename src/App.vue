@@ -1,13 +1,12 @@
 <template>
     <DayNightModeButton />
     <h1>Hello UIs!</h1>
-    <p>仓库地址: <a href="https://github.com/takestairs/pages">https://github.com/takestairs/pages</a> <strong>Current route
-            path:</strong> {{ $route.fullPath }}</p>
-
-    <!-- <h2>公共脚本：</h2> -->
+    <p>仓库地址: <a href="https://github.com/takestairs/pages">https://github.com/takestairs/pages</a> <strong>Current route path:</strong> {{ $route.fullPath }}</p>
+    
     <nav>
         <a href="/public/js/vpss.js">VPS填单</a>
         <a href="/public/js/plusvv.js">Plus跳转</a>
+        <a href="/public/js/teacherTraining.js">教师研修</a>
     </nav>
 
     <nav>
