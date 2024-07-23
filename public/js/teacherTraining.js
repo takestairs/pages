@@ -66,14 +66,15 @@
      * 异步检查dom元素，返回promise。当只匹配到1个dom元素时，兑现这个dom元素。匹配多个dom是返回List。
      * 如果保证selector一定能匹配，则不要给timeout参数。
      * @param {string} selector 
+     * @param {ParentNode} parentDom
      * @param {number} refresh 
      * @param {number} timeout 
      * @returns {Promise<NodeListOf<Element> | Element>}
      */
-    async function domQueryPromise(selector, timeout, refresh = 1000) {
+    async function domQueryPromise(selector, parentDom, timeout, refresh = 1000) {
         return new Promise((resolve, reject) => {
             let t = setInterval(() => {
-                let obj = document.querySelectorAll(selector);
+                let obj = parentDom ? parentDom.querySelectorAll(selector) : document.querySelectorAll(selector);
                 if (obj.length > 0) {
                     clearInterval(t); // 清除循环定时器
                     resolve(obj.length == 1 ? obj[0] : obj); // 兑现 Promise，并提供找到的 DOM 元素
@@ -128,35 +129,29 @@
 
                 // 自动静音、倍速、播放
                 video.muted = true;
-                video.playbackRate = 2.0;
+                // video.playbackRate = 2.0;
                 video.play();
 
                 // 避免过载监听器
-                if (video.AUTO) return
-
-                // 添加 'pause' 事件监听器
-                video.addEventListener('pause', function () {
-                    // 如果视频没有播放完毕
-                    if (!video.ended) {
-                        // 延迟2秒后自动播放
-                        // setTimeout(function () {
-                        //     playVideo();
-                        // }, 2000);
+                if (!video.AUTO) {
+                    // 添加 'pause' 事件监听器
+                    video.addEventListener('pause', function () {
                         playVideo();
-                    }
-                });
+                    });
 
-                // 播放完毕时执行回调
-                video.addEventListener('ended', () => {
-                    // 当前正在学习的任务点
-                    if (i <= tasks.length - 1) {
-                        // switch task to next
-                        changeToTask(++i)
-                    } else {
-                        console.log("全部任务都学习完毕");
-                    }
-                });
-                video.AUTO = true
+                    // 播放完毕时执行回调
+                    video.addEventListener('ended', () => {
+                        // 当前正在学习的任务点
+                        if (i <= tasks.length - 1) {
+                            // switch task to next
+                            changeToTask(++i)
+                        } else {
+                            console.log("全部任务都学习完毕");
+                        }
+                    });
+                    video.AUTO = true
+                }
+                video.dispatchEvent(new Event("ended"))
             })
         }
     }))
