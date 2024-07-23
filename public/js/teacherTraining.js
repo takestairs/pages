@@ -134,6 +134,18 @@
                 // 避免过载监听器
                 if (video.AUTO) return
 
+                // 添加 'pause' 事件监听器
+                video.addEventListener('pause', function () {
+                    // 如果视频没有播放完毕
+                    if (!video.ended) {
+                        // 延迟2秒后自动播放
+                        // setTimeout(function () {
+                        //     playVideo();
+                        // }, 2000);
+                        playVideo();
+                    }
+                });
+
                 // 播放完毕时执行回调
                 video.addEventListener('ended', () => {
                     // 当前正在学习的任务点
