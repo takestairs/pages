@@ -1,14 +1,15 @@
 <template>
     <DayNightModeButton />
     <h1>Hello UIs!</h1>
-    <p>仓库地址: <a href="https://github.com/takestairs/pages">https://github.com/takestairs/pages</a> <strong>Current route path:</strong> {{ $route.fullPath }}</p>
+    <p>仓库地址: <a href="https://github.com/takestairs/pages">https://github.com/takestairs/pages</a></p>
     
     <nav v-if="$route.fullPath==='/'">
-        <a href="/public/js/vpss.js">VPS填单</a>
-        <a href="/public/js/plusvv.js">Plus跳转</a>
-        <a href="/public/js/teacherTraining.js">教师研修</a>
-        <a href="/public/cf-ip-scanner.html">Cloudflare IP 扫描器</a>
+        <a href="/js/vpss.js">VPS填单</a>
+        <a href="/js/plusvv.js">Plus跳转</a>
+        <a href="/js/teacherTraining.js">教师研修</a>
+        <a href="/cf-ip-scanner.html">Cloudflare IP 扫描器</a>
     </nav>
+    <p v-if="$route.fullPath!=='/'">Current route path: <strong>{{ $route.fullPath }}</strong></p>
 
     <nav>
         <RouterLink to="/">Home</RouterLink>
