@@ -126,7 +126,7 @@
             })
 
             domQueryPromise("video").then(video => {
-                console.log("自动播放视频...");
+                console.log(`自动播放视频，总时长 ${Math.floor(video.duration/60)} min`);
 
                 // 自动静音、倍速、播放
                 video.muted = true;
@@ -154,6 +154,7 @@
                 }
                 if (SKIP) {
                     video.dispatchEvent(new Event("ended"))
+                    // document.querySelector("video").dispatchEvent(new Event("ended"))
                 }
             })
         }

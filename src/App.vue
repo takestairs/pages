@@ -7,6 +7,7 @@
         <a href="/public/js/vpss.js">VPS填单</a>
         <a href="/public/js/plusvv.js">Plus跳转</a>
         <a href="/public/js/teacherTraining.js">教师研修</a>
+        <a href="/public/cf-ip-scanner.html">Cloudflare IP 扫描器</a>
     </nav>
 
     <nav>
@@ -20,7 +21,7 @@
 
     <main v-if="$route.fullPath !== '/'">
         <router-view v-slot="{ Component }">
-            <keep-alive>
+            <keep-alive include="FkTokenMannageView">
                 <component :is="Component" />
             </keep-alive>
         </router-view>

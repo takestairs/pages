@@ -5,7 +5,6 @@ import FormCollectView from '../views/FormCollectView.vue'
 import WeatherReportView from '../views/WeatherReportView.vue'
 import YesNoView from '../views/YesNoView.vue'
 import FkTokenMannageView from '../views/FkTokenMannageView.vue'
-import { KeepAlive } from 'vue'
 
 export const routes = [
     { path: '/dream', component: DreamCometrueCalculatorView },
