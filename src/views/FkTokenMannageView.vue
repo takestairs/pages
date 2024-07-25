@@ -1,6 +1,10 @@
 <template>
     <button @click="checkAll">检查全部 token</button>
-    <div><input v-model="newToken" /><button @click="addToken">添加</button></div>
+    <div>
+        <input v-model="newToken" />
+        <button @click="handleNewToken">添加</button>
+        <label>{{ status.get("ADD_TOKEN") }}</label>
+    </div>    
     <div>
         <input type="password" v-model="auth" />
         <button @click="saveToken">保存</button>
@@ -42,24 +46,37 @@ const status = reactive(new Map());
  * 缓存 promise，当 promise 兑现时，会触发status的响应式。
  * 需要响应式的地方： {{ status.get(name) }}
  * promise 的地方：cacheStatusPromise(name, promise)
- * @param {Promise<string>} promise 
+ * @param {Promise<string> | Function} provider 
  */
-function cacheStatusPromise(name, promise) {
+function cacheStatusPromise(name, provider) {
     status.set(name, "checking")
-    promise.then(v => {
-        status.set(name, v)
-    })
+    if (provider instanceof Promise) {
+        provider.then(v => {
+            status.set(name, v)
+        })
+    } else if (provider instanceof Function) {
+        status.set(name, provider())
+    }
 }
 
 function deleteToken(token) {
     plusTokens.value.delete(token);
 }
 
-function addToken() {
-    if (newToken.value !== "" && !plusTokens.value.has(newToken)) {
-        plusTokens.value.add(newToken.value.replace(LOGIN, ""))
-    }
+function handleNewToken() {
+    const fks = newToken.value.match(/https:\/\/\S+/g) || []
     newToken.value = ""
+
+    cacheStatusPromise("ADD_TOKEN", () => {
+        fks.forEach(t => addToken(t))
+        return `add: ${fks.length}`
+    })
+}
+
+function addToken(token) {
+    if (token !== "" && !plusTokens.value.has(token)) {
+        plusTokens.value.add(token.replace(LOGIN, ""))
+    }
 }
 
 function saveToken() {
