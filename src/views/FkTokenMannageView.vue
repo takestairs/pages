@@ -1,10 +1,10 @@
 <template>
     <button @click="checkAll">检查全部 token</button>
     <div>
-        <input v-model="newToken" />
+        <input v-model="userInput" />
         <button @click="handleNewToken">添加</button>
         <label>{{ status.get("ADD_TOKEN") }}</label>
-    </div>    
+    </div>
     <div>
         <input type="password" v-model="auth" />
         <button @click="saveToken">保存</button>
@@ -31,15 +31,16 @@
 
 <script setup>
 import axios from 'axios';
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, watch } from 'vue';
 // import { Reactive } from "@vue/reactivity/dist/reactivity.d.ts"
 
 const CHECK = "https://chat.oaifree.com/token/info/";
 const LOGIN = "https://plus.aivvm.com/auth/login_share?token=";
 
 const plusTokens = ref(new Set());
-const newToken = ref("")
+const userInput = ref("")
 const auth = ref("")
+watch(auth, (n)=> localStorage.setItem("auth", n))
 
 const status = reactive(new Map());
 /**
@@ -49,8 +50,8 @@ const status = reactive(new Map());
  * @param {Promise<string> | Function} provider 
  */
 function cacheStatusPromise(name, provider) {
-    status.set(name, "checking")
     if (provider instanceof Promise) {
+        status.set(name, "waiting")
         provider.then(v => {
             status.set(name, v)
         })
@@ -64,12 +65,12 @@ function deleteToken(token) {
 }
 
 function handleNewToken() {
-    const fks = newToken.value.match(/https:\/\/\S+/g) || []
-    newToken.value = ""
+    const fks = userInput.value.match(/https:\/\/\S+/g) || []
+    userInput.value = ""
 
     cacheStatusPromise("ADD_TOKEN", () => {
         fks.forEach(t => addToken(t))
-        return `add: ${fks.length}`
+        return `add: ${fks.length} ${fks.length > 1 ? 'tokens' : 'token'}`
     })
 }
 
@@ -80,7 +81,7 @@ function addToken(token) {
 }
 
 function saveToken() {
-    cacheStatusPromise("SAVE_TOKEN", axios.post("https://api.274452.xyz/upstash/plus", Array.from(plusTokens.value).map(token => LOGIN + token), {
+    cacheStatusPromise("SAVE_TOKEN", axios.post("https://api.274452.xyz/upstash/plus", Array.from(plusTokens.value), {
         headers: { "Authorization": auth.value, "Content-Type": "application/json" }
     }).then(r => r.data.result).catch(e => e))
 }
@@ -107,6 +108,8 @@ onMounted(() => {
             plusTokens.value.add(v.replace(LOGIN, ""));
         });
     })
+
+    auth.value = localStorage.getItem("auth")
 });
 </script>
 

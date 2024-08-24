@@ -20,7 +20,7 @@
         <RouterLink to="/fk">fk-token 管理</RouterLink>
     </nav>
 
-    <main v-if="$route.fullPath !== '/'">
+    <main v-show="$route.fullPath !== '/'">
         <router-view v-slot="{ Component }">
             <keep-alive include="FkTokenMannageView">
                 <component :is="Component" />
