@@ -1,2 +1,11 @@
+/js/plusvv.js
+  Content-Type: text/plain; charset=UTF-8
+
+/js/teacherTraining.js
+  Content-Type: text/plain; charset=UTF-8
+
+/js/vpss.js
+  Content-Type: text/plain; charset=UTF-8
+
 /js/*
   Content-Type: application/javascript; charset=UTF-8
