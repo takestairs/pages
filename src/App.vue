@@ -8,6 +8,7 @@
         <a href="/js/plusvv.js">Plus跳转</a>
         <a href="/js/teacherTraining.js">教师研修</a>
         <a href="/cf-ip-scanner.html">Cloudflare IP 扫描器</a>
+        <a href="https://crypt-aax.pages.dev">加密猫</a>
     </nav>
     <p v-if="$route.fullPath!=='/'">Current route path: <strong>{{ $route.fullPath }}</strong></p>
 
