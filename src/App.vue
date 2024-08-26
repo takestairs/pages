@@ -1,48 +1,75 @@
 <template>
-    <DayNightModeButton />
-    <h1>Hello UIs!</h1>
-    <p>仓库地址: <a href="https://github.com/takestairs/pages">https://github.com/takestairs/pages</a></p>
-    
-    <nav v-if="$route.fullPath==='/'">
-        <a href="/js/vpss.js">VPS填单</a>
-        <a href="/js/plusvv.js">Plus跳转</a>
-        <a href="/js/teacherTraining.js">教师研修</a>
-        <a href="/cf-ip-scanner.html">Cloudflare IP 扫描器</a>
-        <a href="https://crypt-aax.pages.dev">加密猫</a>
-    </nav>
-    <p v-if="$route.fullPath!=='/'">Current route path: <strong>{{ $route.fullPath }}</strong></p>
+    <el-container>
+        <h1>UIs</h1>
+        <el-header>
+            <el-menu mode="horizontal">
+                <el-sub-menu index="1">
+                    <template #title>油猴脚本</template>
+                    <el-menu-item index="1-1">
+                        <el-link target="_blank" href="/js/vpss.js">VPS填单</el-link>
+                    </el-menu-item>
+                    <el-menu-item index="1-2">
+                        <el-link target="_blank" href="/js/plusvv.js">Plus镜像</el-link>
+                    </el-menu-item>
+                    <el-menu-item index="1-3">
+                        <el-link target="_blank" href="/js/teacherTraining.js">教师研修</el-link>
+                    </el-menu-item>
+                </el-sub-menu>
 
-    <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/dream">梦想成真计算器</RouterLink>
-        <RouterLink to="/form">表单收集 DEMO</RouterLink>
-        <RouterLink to="/weather">天气查询</RouterLink>
-        <RouterLink to="/ask">Yes or No</RouterLink>
-        <RouterLink to="/fk">fk-token 管理</RouterLink>
-        <RouterLink to="/subscription">结点订阅管理</RouterLink>
-    </nav>
+                <el-menu-item index="2">
+                    <el-link target="_blank" href="/cf-ip-scanner.html">Cloudflare IP 扫描器</el-link>
+                </el-menu-item>
 
-    <main v-show="$route.fullPath !== '/'">
-        <router-view v-slot="{ Component }">
-            <keep-alive include="FkTokenMannageView">
-                <component :is="Component" />
-            </keep-alive>
-        </router-view>
-    </main>
+                <el-menu-item index="3">
+                    <el-link target="_blank" href="https://crypt-aax.pages.dev">加密猫</el-link>
+                </el-menu-item>
+            </el-menu>
+            <DayNightModeButton @change="console.log"/>
+        </el-header>
 
-    <hr />
-    <OneSentence />
+        <el-container>
+            <el-aside width="200px">
+                <el-menu>
+                    <el-menu-item v-for="view in views" :key="view.path" @click="$router.push(view.path)">
+                        <template #title>{{ view.text }}</template>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
+
+            <el-container>
+                <el-main>
+                    <router-view v-slot="{ Component }">
+                        <keep-alive include="FkTokenMannageView">
+                            <component :is="Component" />
+                        </keep-alive>
+                    </router-view>
+                </el-main>
+
+                <el-footer>
+                    <OneSentence />
+                </el-footer>
+            </el-container>
+        </el-container>
+    </el-container>
 </template>
 
 <script setup>
 import OneSentence from "./components/OneSentence.vue"
 import DayNightModeButton from "./components/DayNightModeButton.vue"
-import { KeepAlive } from "vue";
+import { KeepAlive, ref } from "vue";
 
+const views = [
+    { path: '/', text: 'Home' },
+    { path: '/dream', text: '梦想成真计算器' },
+    { path: '/form', text: '表单收集' },
+    { path: '/weather', text: '天气查询' },
+    { path: '/ask', text: 'Yes or No' },
+    { path: '/fk', text: 'fk-token 管理' },
+    { path: '/subscription', text: '结点订阅管理' },
+]
 </script>
 
-
-<style>
+<!-- <style>
 :root {
     --primary-color: #3498db;
     --secondary-color: #2ecc71;
@@ -125,4 +152,4 @@ hr {
         text-align: center;
     }
 }
-</style>
+</style> -->

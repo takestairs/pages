@@ -1,8 +1,18 @@
 <template>
-    <input type="text" v-model="question" placeholder="你想问什么？" @focus="clear" @keydown.enter="ask"> <button
-        @click="ask">ASK</button>
-    <h4 v-if="answer">{{ answer.toLocaleUpperCase() }}</h4>
-    <img v-if="gif" :src="gif">
+    <el-card style="max-width: 480px">
+        <el-space warp>
+            <el-input clearable type="text" v-model="question" placeholder="你想问什么？" @focus="clear"
+                @keydown.enter="ask"></el-input>
+            <el-button @click="ask">ASK</el-button>
+
+            <h4 v-if="answer">{{ answer.toLocaleUpperCase() }}</h4>
+        </el-space>
+
+        <template v-if="gif" #footer>
+            <img :src="gif">
+        </template>
+
+    </el-card>
 </template>
 
 <script>

@@ -1,11 +1,11 @@
 <template>
-    <button @click="checkAll">检查全部 token</button>
     <div>
+        <button @click="checkAll">检查全部 token</button>
+
         <input v-model="userInput" />
         <button @click="handleNewToken">添加</button>
         <label>{{ status.get("ADD_TOKEN") }}</label>
-    </div>
-    <div>
+
         <input type="password" v-model="auth" />
         <button @click="saveToken">保存</button>
         <label>{{ status.get("SAVE_TOKEN") }}</label>
@@ -40,7 +40,7 @@ const LOGIN = "https://plus.aivvm.com/auth/login_share?token=";
 const plusTokens = ref(new Set());
 const userInput = ref("")
 const auth = ref("")
-watch(auth, (n)=> localStorage.setItem("auth", n))
+watch(auth, (n) => localStorage.setItem("auth", n))
 
 const status = reactive(new Map());
 /**
@@ -122,6 +122,13 @@ onMounted(() => {
 }
 
 /* 基本布局 */
+div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 button {
     padding: 0.5rem 1rem;
     border: none;
@@ -136,16 +143,20 @@ button:hover {
     background-color: #2c3e50;
 }
 
-input {
+input[type="password"],
+input[type="text"] {
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    flex-grow: 1;
+    min-width: 150px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+    font-size: 14px;
 }
 
 th,
@@ -160,17 +171,31 @@ th {
 }
 
 /* 特定样式 */
-a {
-    color: #42b983;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
 label {
     margin-left: 0.5rem;
     color: #2c3e50;
+    align-self: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    div {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    input[type="password"],
+    input[type="text"] {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+        padding: 0.75rem;
+    }
+
+    table {
+        font-size: 12px;
+    }
 }
 </style>

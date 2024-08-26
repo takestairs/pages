@@ -1,17 +1,24 @@
 <template>
-    <div>
-        <div>{{ content }}</div>
-        <div id="author">{{ author }}</div>
-        <button @click=updateSentence>换一句</button>&nbsp;&nbsp;&nbsp;
-        <select v-model="lang" @change=updateSentence>
-            <option>zh</option>
-            <option>en</option>
-        </select>
-    </div>
+    <el-text tag="div" type="info">{{ content }}</el-text>
+    <el-text tag="div" type="info" style="text-align: right;">{{ author }}</el-text>
+
+    <el-space wrap>
+        <el-select v-model="lang" @change=updateSentence style="width: 80px" size="small">
+            <el-option value="zh" label="中文"></el-option>
+            <el-option value="en" label="英文"></el-option>
+        </el-select>
+
+        <el-button :icon="Refresh" @click=updateSentence circle size="small">
+            <el-icon>
+                <Refresh />
+            </el-icon>
+        </el-button>
+    </el-space>
 </template>
 
 <script>
 import axios from 'axios'
+import { Refresh } from '@element-plus/icons-vue';
 
 export default {
     data() {
@@ -71,9 +78,3 @@ export default {
     }
 }
 </script>
-
-<style>
-#author {
-    text-align: right;
-}
-</style>
