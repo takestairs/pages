@@ -23,6 +23,22 @@
                 <el-menu-item index="3">
                     <el-link target="_blank" href="https://crypt-aax.pages.dev">加密猫</el-link>
                 </el-menu-item>
+
+                <el-sub-menu index="4">
+                    <template #title>权威文档</template>
+                    <el-menu-item index="4-1">
+                        <el-link target="_blank" href="https://element-plus.org/zh-CN/">Element-plus</el-link>
+                    </el-menu-item>
+                    <el-menu-item index="4-2">
+                        <el-link target="_blank" href="https://router.vuejs.org/zh/">Vue-Router</el-link>
+                    </el-menu-item>
+                    <el-menu-item index="4-3">
+                        <el-link target="_blank" href="https://gopl-zh.github.io/">Go</el-link>
+                    </el-menu-item>
+                    <el-menu-item index="4-3">
+                        <el-link target="_blank" href="https://docker-practice.github.io/zh-cn/">Docker</el-link>
+                    </el-menu-item>
+                </el-sub-menu>
             </el-menu>
             <DayNightModeButton @change="console.log"/>
         </el-header>
