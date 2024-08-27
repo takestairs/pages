@@ -1,20 +1,35 @@
 <template>
-    <div>
-        <input type="password" v-model="auth" />
-        <input type="text" v-model="branch" />
-        <button @click="getSubcription">获取结点信息</button>
-        <label>{{ nodeUrlSet.size }}</label>
+    <el-space warp>
+        <el-select v-model="branch" placeholder="Select a Branch" style="width: 80px">
+            <el-option label="自建" value="private" />
+            <el-option label="公共" value="public" />
+        </el-select>
+        <el-button @click="getSubcription">获取结点</el-button>
+        <el-text type="info">*{{ nodeUrlSet.size }}</el-text>
+    
+        <el-input v-model="userInput" />
+        <el-button @click="addNodeInfo">添加结点</el-button>
+        <el-button @click="nodeUrlSet.clear()">清空结点</el-button>
+        <el-button @click="saveSubcription">保存结点</el-button>
+        <el-text type="info">{{ status.get("SAVE") }}</el-text>
 
-        <input v-model="userInput" />
-        <button @click="addNodeInfo">添加结点信息</button>
-        <button @click="nodeUrlSet.clear()">清空结点信息</button>
-        <button @click="saveSubcription">保存结点信息</button>
-        <label>{{ status.get("SAVE") }}</label>
+        <el-button @click="copyAll">复制全部</el-button>
+        <el-text type="info">{{ status.get("COPYALL") }}</el-text>
+    </el-space>
 
-        <button @click="copyAll">复制全部结点信息</button>
-        <label>{{ status.get("COPYALL") }}</label>
-    </div>
-    <table>
+    <el-table :data="showData" height="650px" style="width: 100%">
+        <el-table-column label="NODE" prop="slice"></el-table-column>
+
+        <el-table-column label="ACTIONS">
+            <template #default="scope" style="display: flex; align-items: center">
+                <el-button @click="deleteNodeUrl(scope.row.url)">删除</el-button>
+                <el-button @click="copyNodeUrl(scope.row.url)">复制</el-button>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="STATUS" prop="status"></el-table-column>
+    </el-table>
+    <!-- <table>
         <thead>
             <th>NODE</th>
             <th>ACTIONS</th>
@@ -30,24 +45,34 @@
                 <template v-if="status.has(nodeUrl)">{{ status.get(nodeUrl) }}</template>
             </td>
         </tr>
-    </table>
+    </table> -->
 </template>
 
 <script setup>
 import axios from 'axios';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { auth } from './const';
 
 // 使用 ref 定义局部可变数据
 const nodeUrlSet = ref(new Set())
 const userInput = ref("")
-const auth = ref("")
 const branch = ref("")
 
-const nodeKey = computed(() => {
-    return branch.value === "" ? "subscription" : `subscription:${branch.value}`
+const upstashKey = computed(() => {
+    return {
+        "public": "subscription:public",
+        "private": "subscription"
+    }[branch.value]
 })
 
-watch(auth, (n) => localStorage.setItem("auth", n))
+const showData = computed(() => {
+    return Array.from(nodeUrlSet.value).map(url => ({
+        slice: getNodeName(url),
+        token: url,
+        status: status.get(url)
+    }))
+})
+
 watch(branch, (n) => localStorage.setItem("branch", n))
 onMounted(() => {
     auth.value = localStorage.getItem("auth")
@@ -73,7 +98,7 @@ function cacheStatusPromise(name, provider) {
 }
 
 function getSubcription() {
-    axios.get(`https://api.274452.xyz/upstash/${nodeKey.value}`, {
+    axios.get(`https://api.274452.xyz/upstash/${upstashKey.value}`, {
         headers: {
             Authorization: auth.value
         }
@@ -90,11 +115,15 @@ function addNodeInfo() {
 }
 
 function getNodeName(nodeUrl) {
-    return decodeURIComponent(nodeUrl.substring(nodeUrl.indexOf("#") + 1))
+    let n = decodeURIComponent(nodeUrl.substring(nodeUrl.indexOf("#") + 1))
+    if (n.startsWith("http")) {
+        n = new URL(n).hostname
+    }
+    return n
 }
 
 function saveSubcription() {
-    cacheStatusPromise("SAVE", axios.post(`https://api.274452.xyz/upstash/${nodeKey.value}`, Array.from(nodeUrlSet.value), {
+    cacheStatusPromise("SAVE", axios.post(`https://api.274452.xyz/upstash/${upstashKey.value}`, Array.from(nodeUrlSet.value), {
         headers: { "Authorization": auth.value, "Content-Type": "application/json" }
     }).then(r => r.data.result).catch(e => e))
 }
@@ -112,7 +141,7 @@ function copyAll() {
 }
 </script>
 
-<style scoped>
+<!-- <style scoped>
 /* 重置默认样式 */
 * {
     margin: 0;
@@ -197,4 +226,4 @@ label {
         font-size: 12px;
     }
 }
-</style>
+</style> -->

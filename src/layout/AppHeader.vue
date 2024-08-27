@@ -47,7 +47,7 @@
                     <el-link target="_blank" href="https://crypt-aax.pages.dev">加密猫</el-link>
                 </el-menu-item>
 
-                <el-menu-item style="--el-menu-hover-bg-color: none; margin-left: auto;">
+                <el-menu-item style="margin-left: auto;">
                     <DayNightModeButton style="scale: 50% 55%;" @change="console.log" />
                 </el-menu-item>
             </el-menu>

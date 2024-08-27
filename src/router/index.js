@@ -6,8 +6,10 @@ import WeatherReportView from '../views/WeatherReportView.vue'
 import YesNoView from '../views/YesNoView.vue'
 import FkTokenMannageView from '../views/FkTokenMannageView.vue'
 import SubscriptionMannageView from '../views/SubscriptionMannageView.vue'
+import HomeView from '../views/HomeView.vue'
 
 export const routes = [
+    { path: '/', component: HomeView },
     { path: '/dream', component: DreamCometrueCalculatorView },
     { path: '/form', component: FormCollectView },
     { path: '/weather', component: WeatherReportView },

@@ -1,16 +1,28 @@
 <template>
-    <div>
-        <button @click="checkAll">检查全部 token</button>
+    <el-space warp>
+        <el-button @click="checkAll">检查全部 token</el-button>
 
-        <input v-model="userInput" />
-        <button @click="handleNewToken">添加</button>
-        <label>{{ status.get("ADD_TOKEN") }}</label>
+        <el-input v-model="userInput" />
+        <el-button @click="handleNewToken">添加</el-button>
+        <el-text type="info">{{ status.get("ADD_TOKEN") }}</el-text>
 
-        <input type="password" v-model="auth" />
-        <button @click="saveToken">保存</button>
-        <label>{{ status.get("SAVE_TOKEN") }}</label>
-    </div>
-    <table>
+        <el-button @click="saveToken">保存</el-button>
+        <el-text type="info">{{ status.get("SAVE_TOKEN") }}</el-text>
+    </el-space>
+
+    <el-table :data="showData" height="650px" style="width: 100%">
+        <el-table-column label="TOKEN" prop="slice"></el-table-column>
+
+        <el-table-column label="ACTIONS">
+            <template #default="scope" style="display: flex; align-items: center">
+                <el-button @click="deleteToken(scope.row.token)">删除</el-button>
+                <el-button @click="checkToken(scope.row.token)">检查</el-button>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="STATUS" prop="status"></el-table-column>
+    </el-table>
+    <!-- <table>
         <thead>
             <th>TARGET</th>
             <th>ACTIONS</th>
@@ -26,21 +38,27 @@
                 <p v-if="status.has(token)">{{ status.get(token) }}</p>
             </td>
         </tr>
-    </table>
+    </table> -->
 </template>
 
 <script setup>
 import axios from 'axios';
-import { ref, reactive, onMounted, watch } from 'vue';
-// import { Reactive } from "@vue/reactivity/dist/reactivity.d.ts"
+import { ref, reactive, onMounted, computed } from 'vue';
+import { auth } from './const';
 
 const CHECK = "https://chat.oaifree.com/token/info/";
 const LOGIN = "https://plus.aivvm.com/auth/login_share?token=";
 
 const plusTokens = ref(new Set());
 const userInput = ref("")
-const auth = ref("")
-watch(auth, (n) => localStorage.setItem("auth", n))
+
+const showData = computed(() => {
+    return Array.from(plusTokens.value).map(token => ({
+        slice: token.slice(-7),
+        token,
+        status: status.get(token)
+    }))
+})
 
 const status = reactive(new Map());
 /**
@@ -113,7 +131,7 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<!-- <style scoped>
 /* 重置默认样式 */
 * {
     margin: 0;
@@ -198,4 +216,4 @@ label {
         font-size: 12px;
     }
 }
-</style>
+</style> -->
