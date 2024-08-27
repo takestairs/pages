@@ -8,7 +8,7 @@
             <el-option value="en" label="英文"></el-option>
         </el-select>
 
-        <el-button :icon="Refresh" @click=updateSentence circle size="small">
+        <el-button @click=updateSentence circle size="small">
             <el-icon>
                 <Refresh />
             </el-icon>

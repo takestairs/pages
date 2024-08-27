@@ -258,6 +258,7 @@ export default {
     margin: 0;
     padding: 0;
     transition: 0.7s;
+    z-index: 4;
 }
 
 /* body { */
@@ -266,11 +267,11 @@ export default {
 
 /* Main container */
 .components {
-    position: fixed;
-    top: 10%;
-    left: 90%;
-    margin-left: -90px;
-    margin-top: -35px;
+    position: relative;
+    /* top: 10%; */
+    /* left: 90%; */
+    /* margin-left: -90px; */
+    /* margin-top: -35px; */
     width: 180px;
     height: 70px;
     background-color: rgba(70, 133, 192, 1);

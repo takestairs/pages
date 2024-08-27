@@ -28,3 +28,10 @@ import AppHeader from "./layout/AppHeader.vue";
 
 import OneSentence from "./components/OneSentence.vue"
 </script>
+
+<style lang="css">
+* {
+    padding: 0px;
+    margin: 0px;
+}
+</style>
