@@ -10,7 +10,7 @@
                     </el-icon>
                 </el-menu-item>
 
-                <el-sub-menu>
+                <el-sub-menu index="1">
                     <template #title>权威文档</template>
                     <el-menu-item>
                         <el-link target="_blank" href="https://element-plus.org/zh-CN/">Element-plus</el-link>
@@ -26,7 +26,7 @@
                     </el-menu-item>
                 </el-sub-menu>
 
-                <el-sub-menu>
+                <el-sub-menu index="2">
                     <template #title>油猴脚本</template>
                     <el-menu-item>
                         <el-link target="_blank" href="/js/vpss.js">VPS填单</el-link>

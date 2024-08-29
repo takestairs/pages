@@ -5,6 +5,8 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { auth } from './const';
 
+onMounted(() => auth.value = localStorage.getItem("auth"))
 </script>

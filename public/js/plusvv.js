@@ -2,12 +2,12 @@
 // @name         Plus-VV
 // @namespace    http://tampermonkey.net/
 // @version      2024-08-25
-// @description  try to take over the world!
+// @updateURL    https://pages.274452.xyz/js/plusvv.js
+// @downloadURL  https://pages.274452.xyz/js/plusvv.js
+// @description  Get the token to login
 // @author       Guitar
 // @match        https://plus.aivvm.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=aivvm.com
-// @updateURL    https://pages.274452.xyz/js/plusvv.js
-// @downloadURL  https://pages.274452.xyz/js/plusvv.js
 // @grant        none
 // ==/UserScript==
 

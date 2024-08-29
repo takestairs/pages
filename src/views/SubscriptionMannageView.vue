@@ -5,58 +5,42 @@
             <el-option label="公共" value="public" />
         </el-select>
         <el-button @click="getSubcription">获取结点</el-button>
-        <el-text type="info">*{{ nodeUrlSet.size }}</el-text>
-    
+
+        <el-text type="info">{{ nodeUrlSet.size }}</el-text>
+
         <el-input v-model="userInput" />
         <el-button @click="addNodeInfo">添加结点</el-button>
         <el-button @click="nodeUrlSet.clear()">清空结点</el-button>
         <el-button @click="saveSubcription">保存结点</el-button>
-        <el-text type="info">{{ status.get("SAVE") }}</el-text>
-
         <el-button @click="copyAll">复制全部</el-button>
-        <el-text type="info">{{ status.get("COPYALL") }}</el-text>
     </el-space>
 
-    <el-table :data="showData" height="650px" style="width: 100%">
-        <el-table-column label="NODE" prop="slice"></el-table-column>
+    <el-table :data="showData" height="450px">
+        <el-table-column label="NODE" prop="slice" show-overflow-tooltip></el-table-column>
 
         <el-table-column label="ACTIONS">
-            <template #default="scope" style="display: flex; align-items: center">
+            <template #default="scope">
                 <el-button @click="deleteNodeUrl(scope.row.url)">删除</el-button>
                 <el-button @click="copyNodeUrl(scope.row.url)">复制</el-button>
+                <el-button v-if="scope.row.url.startsWith('http')" @click="checkSubUrl(scope.row.url)">测活</el-button>
             </template>
         </el-table-column>
 
         <el-table-column label="STATUS" prop="status"></el-table-column>
     </el-table>
-    <!-- <table>
-        <thead>
-            <th>NODE</th>
-            <th>ACTIONS</th>
-            <th>STATUS</th>
-        </thead>
-        <tr v-for="(nodeUrl, index) in Array.from(nodeUrlSet)" :key="index">
-            <td>{{ getNodeName(nodeUrl) }}</td>
-            <td>
-                <button @click="deleteNodeUrl(nodeUrl)">删除</button>
-                <button @click="copyNodeUrl(nodeUrl)">复制</button>
-            </td>
-            <td>
-                <template v-if="status.has(nodeUrl)">{{ status.get(nodeUrl) }}</template>
-            </td>
-        </tr>
-    </table> -->
 </template>
 
 <script setup>
 import axios from 'axios';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { auth } from './const';
+import { auth, makeRefWithLocalStorge } from './const';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { el } from 'element-plus/es/locales.mjs';
 
 // 使用 ref 定义局部可变数据
 const nodeUrlSet = ref(new Set())
 const userInput = ref("")
-const branch = ref("")
+const branch = makeRefWithLocalStorge("", "branch")
 
 const upstashKey = computed(() => {
     return {
@@ -68,14 +52,12 @@ const upstashKey = computed(() => {
 const showData = computed(() => {
     return Array.from(nodeUrlSet.value).map(url => ({
         slice: getNodeName(url),
-        token: url,
+        url: url,
         status: status.get(url)
     }))
 })
 
-watch(branch, (n) => localStorage.setItem("branch", n))
 onMounted(() => {
-    auth.value = localStorage.getItem("auth")
     branch.value = localStorage.getItem("branch")
 })
 
@@ -106,12 +88,20 @@ function getSubcription() {
         d.forEach((v) => {
             nodeUrlSet.value.add(v);
         })
-    })
+        ElMessage.success(`获取结点${d.length}个`)
+    }).catch(e => ElMessage.error(e))
 }
 
 function addNodeInfo() {
-    nodeUrlSet.value.add(userInput.value)
+    const s = nodeUrlSet.value.size
+    const nodes = userInput.value.match(/\w+:\/\/\S+/g) || []
     userInput.value = ""
+
+    nodes.forEach(n => nodeUrlSet.value.add(n))
+    const newAdd = nodeUrlSet.value.size - s
+    if (newAdd) ElMessage.success(`新增${newAdd}个结点`)
+    const repeat = nodes.length - newAdd
+    if (repeat) ElMessage.warning(`${repeat}个结点重复`)
 }
 
 function getNodeName(nodeUrl) {
@@ -123,9 +113,18 @@ function getNodeName(nodeUrl) {
 }
 
 function saveSubcription() {
-    cacheStatusPromise("SAVE", axios.post(`https://api.274452.xyz/upstash/${upstashKey.value}`, Array.from(nodeUrlSet.value), {
-        headers: { "Authorization": auth.value, "Content-Type": "application/json" }
-    }).then(r => r.data.result).catch(e => e))
+    ElMessageBox.alert('这将会覆盖云端配置，确定继续？', '保存订阅信息', {
+        confirmButtonText: 'OK',
+        callback: (action) => {
+            if (action == 'confirm') {
+                axios.post(`https://api.274452.xyz/upstash/${upstashKey.value}`, Array.from(nodeUrlSet.value), {
+                    headers: { "Authorization": auth.value, "Content-Type": "application/json" }
+                }).then(r => ElMessage.success(r.data.result)).catch(e => ElMessage.error(e))
+            } else {
+                ElMessage.info("已取消保存")
+            }
+        }
+    })
 }
 
 function deleteNodeUrl(nodeUrl) {
@@ -137,93 +136,12 @@ function copyNodeUrl(nodeUrl) {
 }
 
 function copyAll() {
-    cacheStatusPromise("COPYALL", navigator.clipboard.writeText(Array.from(nodeUrlSet).join("")).then(() => "copied"))
+    navigator.clipboard.writeText(Array.from(nodeUrlSet).join("")).then(() => ElMessage.success("copied"))
+}
+
+function checkSubUrl(url) {
+    window.open(url, "_blank")
+    status.set(url, "tested")
+    // cacheStatusPromise(url, axios.get(url).then(r => r.data)) // need CORS
 }
 </script>
-
-<!-- <style scoped>
-/* 重置默认样式 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* 基本布局 */
-div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    background-color: #42b983;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #2c3e50;
-}
-
-input[type="password"],
-input[type="text"] {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    flex-grow: 1;
-    min-width: 150px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    font-size: 14px;
-}
-
-th,
-td {
-    padding: 0.5rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-/* 特定样式 */
-label {
-    margin-left: 0.5rem;
-    color: #2c3e50;
-    align-self: center;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-    div {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    input[type="password"],
-    input[type="text"] {
-        width: 100%;
-    }
-
-    button {
-        width: 100%;
-        padding: 0.75rem;
-    }
-
-    table {
-        font-size: 12px;
-    }
-}
-</style> -->

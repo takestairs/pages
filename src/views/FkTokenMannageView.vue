@@ -2,12 +2,13 @@
     <el-space warp>
         <el-button @click="checkAll">检查全部 token</el-button>
 
+        <el-text type="info">{{ plusTokens.size }}</el-text>
+
         <el-input v-model="userInput" />
         <el-button @click="handleNewToken">添加</el-button>
-        <el-text type="info">{{ status.get("ADD_TOKEN") }}</el-text>
+
 
         <el-button @click="saveToken">保存</el-button>
-        <el-text type="info">{{ status.get("SAVE_TOKEN") }}</el-text>
     </el-space>
 
     <el-table :data="showData" height="650px" style="width: 100%">
@@ -22,29 +23,13 @@
 
         <el-table-column label="STATUS" prop="status"></el-table-column>
     </el-table>
-    <!-- <table>
-        <thead>
-            <th>TARGET</th>
-            <th>ACTIONS</th>
-            <th>STATUS</th>
-        </thead>
-        <tr v-for="(token, index) in Array.from(plusTokens)" :key="index">
-            <td><a :href="`${LOGIN}${token}`">{{ token.slice(-7) }}</a></td>
-            <td>
-                <button @click="deleteToken(token)">删除</button>
-                <button @click="checkToken(token)">检查</button>
-            </td>
-            <td>
-                <p v-if="status.has(token)">{{ status.get(token) }}</p>
-            </td>
-        </tr>
-    </table> -->
 </template>
 
 <script setup>
 import axios from 'axios';
 import { ref, reactive, onMounted, computed } from 'vue';
 import { auth } from './const';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 const CHECK = "https://chat.oaifree.com/token/info/";
 const LOGIN = "https://plus.aivvm.com/auth/login_share?token=";
@@ -86,22 +71,27 @@ function handleNewToken() {
     const fks = userInput.value.match(/https:\/\/\S+/g) || []
     userInput.value = ""
 
-    cacheStatusPromise("ADD_TOKEN", () => {
-        fks.forEach(t => addToken(t))
-        return `add: ${fks.length} ${fks.length > 1 ? 'tokens' : 'token'}`
+    fks.forEach(token => {
+        if (token !== "" && !plusTokens.value.has(token)) {
+            plusTokens.value.add(token.replace(LOGIN, ""))
+        }
     })
-}
-
-function addToken(token) {
-    if (token !== "" && !plusTokens.value.has(token)) {
-        plusTokens.value.add(token.replace(LOGIN, ""))
-    }
+    ElMessage.success(`add ${fks.length} ${fks.length > 1 ? 'tokens' : 'token'}`)
 }
 
 function saveToken() {
-    cacheStatusPromise("SAVE_TOKEN", axios.post("https://api.274452.xyz/upstash/plus", Array.from(plusTokens.value), {
-        headers: { "Authorization": auth.value, "Content-Type": "application/json" }
-    }).then(r => r.data.result).catch(e => e))
+    ElMessageBox.alert('这将会覆盖云端配置，确定继续？', '保存Token信息', {
+        confirmButtonText: 'OK',
+        callback: (action) => {
+            if (action == 'confirm') {
+                axios.post("https://api.274452.xyz/upstash/plus", Array.from(plusTokens.value), {
+                    headers: { "Authorization": auth.value, "Content-Type": "application/json" }
+                }).then(r => ElMessage.success(r.data.result)).catch(e => ElMessage.error(e))
+            } else {
+                ElMessage.info("已取消保存")
+            }
+        }
+    })
 }
 
 async function checkToken(token) {
@@ -126,8 +116,6 @@ onMounted(() => {
             plusTokens.value.add(v.replace(LOGIN, ""));
         });
     })
-
-    auth.value = localStorage.getItem("auth")
 });
 </script>
 

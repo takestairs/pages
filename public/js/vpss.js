@@ -1,8 +1,10 @@
 // ==UserScript==
 // @name         VPS-s
 // @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  try to take over the world!
+// @version      2024-08-25
+// @updateURL    https://pages.274452.xyz/js/vpss.js
+// @downloadURL  https://pages.274452.xyz/js/vpss.js
+// @description  自动填写表单
 // @author       You
 // @match        https://hax.co.id/create-vps/
 // @match        https://woiden.id/create-vps/
@@ -38,10 +40,5 @@
     checkObj("#password", (e) => e.value = pwd)
     checkObj("#purpose", (e) => e.selectedIndex = 1)
     checkObj(".form-check-input", () => $(".form-check-input").click())
-
-    // checkObj("#anchor-wr", (e) => {
-    //     e.disabled = false
-    //     e.click()
-    // })
 
 })();

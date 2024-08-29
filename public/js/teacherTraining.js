@@ -1,18 +1,18 @@
 // ==UserScript==
 // @name         假期研修
+// @description  模拟点击，挂机完成页面的所有任务点
 // @namespace    http://tampermonkey.net/
-// @version      2024-07-23
-// @description  try to take over the world!
 // @author       Guitar
-// @match        https://basic.smartedu.cn/teacherTraining/courseDetail?*
+// @version      2024-08-29
+// @updateURL    https://pages.274452.xyz/js/teacherTraining.js
+// @downloadURL  https://pages.274452.xyz/js/teacherTraining.js
+// @match        https://basic.smartedu.cn/teacherTraining/courseDetail*
 // @run-at       document-start
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=smartedu.cn
-// @grant        none
 // ==/UserScript==
 
 (function () {
     'use strict';
-    const SKIP = false
 
     // console 输出代理控制 对象，只给往终端输出信息的函数加锁
     const console = (function () {
@@ -98,11 +98,11 @@
 
         // 2. 获取所有的研修任务点和起始下标
         const tasks = Array.from(document.querySelectorAll("div.resource-item.resource-item-train"))
-        console.log("获取到任务点：", tasks.length);
+        console.log("获取到任务点个数：", tasks.length);
 
         // let i = tasks.indexOf(document.querySelector("div.resource-item.resource-item-train.resource-item-active"))
         let i = tasks.findIndex(e => !isTaskFinished(e))
-        console.log(`第一个未完成的任务是第${i}个`);
+        // console.log(`第一个未完成的任务是第${i}个`);
         changeToTask(i)
 
         // 3. 开始挂机
@@ -126,7 +126,7 @@
             })
 
             domQueryPromise("video").then(video => {
-                console.log(`自动播放视频，总时长 ${Math.floor(video.duration/60)} min`);
+                console.log(`自动播放视频，总时长 ${Math.floor(video.duration / 60)} min`);
 
                 // 自动静音、倍速、播放
                 video.muted = true;
@@ -151,10 +151,6 @@
                         }
                     });
                     video.AUTO = true
-                }
-                if (SKIP) {
-                    video.dispatchEvent(new Event("ended"))
-                    // document.querySelector("video").dispatchEvent(new Event("ended"))
                 }
             })
         }
