@@ -108,6 +108,15 @@ function getNodeName(nodeUrl) {
     let n = decodeURIComponent(nodeUrl.substring(nodeUrl.indexOf("#") + 1))
     if (n.startsWith("http")) {
         n = new URL(n).hostname
+    } else if (n.startsWith("vmess")) {
+        function base64ToBytes(base64) {
+            const binString = atob(base64);
+            return Uint8Array.from(binString, (m) => m.codePointAt(0));
+        }
+        const o = JSON.parse(new TextDecoder().decode(base64ToBytes(n.substring(8))))
+        console.log(o);
+
+        n = o["ps"]
     }
     return n
 }
