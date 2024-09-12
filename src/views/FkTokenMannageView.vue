@@ -4,11 +4,11 @@
 
         <el-text type="info">{{ plusTokens.size }}</el-text>
 
-        <el-input v-model="userInput" />
+        <el-input v-model="userInput" style="min-width: 50px;" />
         <el-button @click="handleNewToken">添加</el-button>
 
-
         <el-button @click="saveToken">保存</el-button>
+        <el-button @click="cleanInvalid">清除无效token</el-button>
     </el-space>
 
     <el-table :data="showData" height="650px" style="width: 100%">
@@ -30,6 +30,7 @@ import axios from 'axios';
 import { ref, reactive, onMounted, computed } from 'vue';
 import { auth } from './const';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { pl } from 'element-plus/es/locales.mjs';
 
 const CHECK = "https://chat.oaifree.com/token/info/";
 const LOGIN = "https://plus.aivvm.com/auth/login_share?token=";
@@ -108,6 +109,16 @@ function checkAll() {
     plusTokens.value.forEach(token => {
         checkToken(token);
     });
+}
+
+function cleanInvalid() {
+    const len = plusTokens.value.size
+    plusTokens.value.forEach(token => {
+        if (status.get(token) !== "ok" && status.get(token) !== "waiting") {
+            deleteToken(token)
+        }
+    });
+    ElMessage.success(`Remove ${len-plusTokens.value.size} token`)
 }
 
 onMounted(() => {
