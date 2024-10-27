@@ -59,6 +59,6 @@
 import DayNightModeButton from "../components/DayNightModeButton.vue"
 
 import { Expand, Fold } from "@element-plus/icons-vue";
-import isAsideCollapse from "./isAsideCollapse";
+import { isAsideCollapse } from "../const"
 
 </script>

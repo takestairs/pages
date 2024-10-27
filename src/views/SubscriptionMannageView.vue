@@ -32,8 +32,9 @@
 
 <script setup>
 import axios from 'axios';
-import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { auth, makeRefWithLocalStorge } from './const';
+import { computed, reactive, ref, watch, onMounted } from 'vue'
+import { auth } from '../const';
+import { makeRefWithLocalStorge } from '../util/ReactiveUtil';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { el } from 'element-plus/es/locales.mjs';
 
@@ -41,6 +42,9 @@ import { el } from 'element-plus/es/locales.mjs';
 const nodeUrlSet = ref(new Set())
 const userInput = ref("")
 const branch = makeRefWithLocalStorge("", "branch")
+onMounted(() => {
+    branch.value = localStorage.getItem("branch")
+})
 
 const upstashKey = computed(() => {
     return {
@@ -55,10 +59,6 @@ const showData = computed(() => {
         url: url,
         status: status.get(url)
     }))
-})
-
-onMounted(() => {
-    branch.value = localStorage.getItem("branch")
 })
 
 const status = reactive(new Map());
@@ -114,7 +114,7 @@ function getNodeName(nodeUrl) {
             return Uint8Array.from(binString, (m) => m.codePointAt(0));
         }
         const o = JSON.parse(new TextDecoder().decode(base64ToBytes(n.substring(8))))
-        console.log(o);
+        // console.log(o);
 
         n = o["ps"]
     }

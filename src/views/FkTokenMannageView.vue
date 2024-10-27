@@ -18,6 +18,14 @@
             <template #default="scope" style="display: flex; align-items: center">
                 <el-button @click="deleteToken(scope.row.token)">删除</el-button>
                 <el-button @click="checkToken(scope.row.token)">检查</el-button>
+                <el-button @click="copyToken(scope.row.token)">复制</el-button>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="LINKS">
+            <template #default="scope" style="display: flex; align-items: center">
+                <el-button @click="openToken(scope.row.token, 0)">aivvm</el-button>
+                <el-button @click="openToken(scope.row.token, 1)">oaifree</el-button>
             </template>
         </el-table-column>
 
@@ -28,7 +36,7 @@
 <script setup>
 import axios from 'axios';
 import { ref, reactive, onMounted, computed } from 'vue';
-import { auth } from './const';
+import { auth } from '../const';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { pl } from 'element-plus/es/locales.mjs';
 
@@ -64,6 +72,11 @@ function cacheStatusPromise(name, provider) {
     }
 }
 
+function openToken(token, i = 0) {
+    const prefixes = ["https://plus.aivvm.com/auth/login_share?token=", "https://new.oaifree.com/auth/login_share?token="]
+    window.open(prefixes[i] + token)
+}
+
 function deleteToken(token) {
     plusTokens.value.delete(token);
 }
@@ -95,6 +108,10 @@ function saveToken() {
     })
 }
 
+async function copyToken(token) {
+    cacheStatusPromise(token, navigator.clipboard.writeText(token).then(() => "copied"))
+}
+
 async function checkToken(token) {
     cacheStatusPromise(token, axios.get(`${CHECK}${token}`).then(r => r.data).then(result => {
         if (result && result.expire_at > Math.ceil(Date.now() / 1000)) {
@@ -118,7 +135,7 @@ function cleanInvalid() {
             deleteToken(token)
         }
     });
-    ElMessage.success(`Remove ${len-plusTokens.value.size} token`)
+    ElMessage.success(`Remove ${len - plusTokens.value.size} token`)
 }
 
 onMounted(() => {

@@ -16,7 +16,7 @@
 
 <script setup>
 import { Cloudy, Coin, Finished, Help, Link, Tickets } from '@element-plus/icons-vue';
-import isAsideCollapse from './isAsideCollapse';
+import { isAsideCollapse } from "../const";
 
 const views = [
     // { path: '/', text: 'Home' },
