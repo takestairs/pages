@@ -33,10 +33,9 @@
 <script setup>
 import axios from 'axios';
 import { computed, reactive, ref, watch, onMounted } from 'vue'
-import { auth } from '../const';
+import { auth } from "../util/const";
 import { makeRefWithLocalStorge } from '../util/ReactiveUtil';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { el } from 'element-plus/es/locales.mjs';
 
 // 使用 ref 定义局部可变数据
 const nodeUrlSet = ref(new Set())
