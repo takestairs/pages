@@ -36,9 +36,8 @@
 <script setup>
 import axios from 'axios';
 import { ref, reactive, onMounted, computed } from 'vue';
-import { auth } from '../const';
+import { auth } from '../util/const';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { pl } from 'element-plus/es/locales.mjs';
 
 const CHECK = "https://chat.oaifree.com/token/info/";
 const LOGIN = "https://plus.aivvm.com/auth/login_share?token=";

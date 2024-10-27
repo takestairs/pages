@@ -1,4 +1,4 @@
-import { makeRefWithLocalStorge } from "./util/reactiveUtil"
+import { makeRefWithLocalStorge } from "./reactiveUtil"
 
 
 const auth = makeRefWithLocalStorge("", "auth")
