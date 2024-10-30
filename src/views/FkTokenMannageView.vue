@@ -40,13 +40,13 @@ import { auth } from '../util/const';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 const CHECK = "https://chat.oaifree.com/token/info/";
-const LOGIN = "https://plus.aivvm.com/auth/login_share?token=";
+const INPUT_PREFIX = "https://plus.aivvm.com/auth/login_share?token=";
 
-const plusTokens = ref(new Set());
+const plusTokens = ref([]);
 const userInput = ref("")
 
 const showData = computed(() => {
-    return Array.from(plusTokens.value).map(token => ({
+    return plusTokens.value.map(token => ({
         slice: token.slice(-7),
         token,
         status: status.get(token)
@@ -77,16 +77,15 @@ function openToken(token, i = 0) {
 }
 
 function deleteToken(token) {
-    plusTokens.value.delete(token);
+    plusTokens.value = plusTokens.value.filter(t => t !== token);
 }
 
 function handleNewToken() {
     const fks = userInput.value.match(/https:\/\/\S+/g) || []
     userInput.value = ""
-
     fks.forEach(token => {
-        if (token !== "" && !plusTokens.value.has(token)) {
-            plusTokens.value.add(token.replace(LOGIN, ""))
+        if (token !== "") {
+            plusTokens.value.push(token.replace(INPUT_PREFIX, ""))
         }
     })
     ElMessage.success(`add ${fks.length} ${fks.length > 1 ? 'tokens' : 'token'}`)
@@ -97,9 +96,9 @@ function saveToken() {
         confirmButtonText: 'OK',
         callback: (action) => {
             if (action == 'confirm') {
-                axios.post("https://api.274452.xyz/upstash/plus", Array.from(plusTokens.value), {
+                axios.post("https://api.274452.xyz/upstash/plus", plusTokens.value, {
                     headers: { "Authorization": auth.value, "Content-Type": "application/json" }
-                }).then(r => ElMessage.success(r.data.result)).catch(e => ElMessage.error(e))
+                }).then(r => ElMessage.success(r.data)).catch(e => ElMessage.error(e))
             } else {
                 ElMessage.info("已取消保存")
             }
@@ -123,24 +122,24 @@ async function checkToken(token) {
 
 function checkAll() {
     plusTokens.value.forEach(token => {
-        checkToken(token);
-    });
+        checkToken(token)
+    })
 }
 
 function cleanInvalid() {
-    const len = plusTokens.value.size
+    const len = plusTokens.value.length
     plusTokens.value.forEach(token => {
         if (status.get(token) !== "ok" && status.get(token) !== "waiting") {
             deleteToken(token)
         }
-    });
-    ElMessage.success(`Remove ${len - plusTokens.value.size} token`)
+    })
+    ElMessage.success(`Remove ${len - plusTokens.value.length} token`)
 }
 
 onMounted(() => {
     axios.get("https://api.274452.xyz/upstash/plus").then(r => r.data).then(d => {
-        d.forEach((v) => {
-            plusTokens.value.add(v.replace(LOGIN, ""));
+        d.forEach(v => {
+            plusTokens.value.push(v.replace(INPUT_PREFIX, ""));
         });
     })
 });

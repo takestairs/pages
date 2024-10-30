@@ -45,10 +45,10 @@ onMounted(() => {
     branch.value = localStorage.getItem("branch")
 })
 
-const upstashKey = computed(() => {
+const origin = computed(() => {
     return {
-        "public": "subscription:public",
-        "private": "subscription"
+        "public": "public",
+        "private": "self-raw"
     }[branch.value]
 })
 
@@ -79,7 +79,7 @@ function cacheStatusPromise(name, provider) {
 }
 
 function getSubcription() {
-    axios.get(`https://api.274452.xyz/upstash/${upstashKey.value}`, {
+    axios.get(`https://api.274452.xyz/subcription/${origin.value}`, {
         headers: {
             Authorization: auth.value
         }
@@ -125,9 +125,9 @@ function saveSubcription() {
         confirmButtonText: 'OK',
         callback: (action) => {
             if (action == 'confirm') {
-                axios.post(`https://api.274452.xyz/upstash/${upstashKey.value}`, Array.from(nodeUrlSet.value), {
+                axios.post(`https://api.274452.xyz/subcription/${origin.value}`, Array.from(nodeUrlSet.value), {
                     headers: { "Authorization": auth.value, "Content-Type": "application/json" }
-                }).then(r => ElMessage.success(r.data.result)).catch(e => ElMessage.error(e))
+                }).then(r => ElMessage.success(r.data)).catch(e => ElMessage.error(e))
             } else {
                 ElMessage.info("已取消保存")
             }
