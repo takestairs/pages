@@ -127,7 +127,7 @@ function saveSubcription() {
             if (action == 'confirm') {
                 axios.post(`https://api.274452.xyz/subcription/${origin.value}`, Array.from(nodeUrlSet.value), {
                     headers: { "Authorization": auth.value, "Content-Type": "application/json" }
-                }).then(r => ElMessage.success(r.data)).catch(e => ElMessage.error(e))
+                }).then(r => ElMessage.success(r)).catch(e => ElMessage.error(e))
             } else {
                 ElMessage.info("已取消保存")
             }
