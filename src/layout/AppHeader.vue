@@ -37,6 +37,9 @@
                     <el-menu-item>
                         <el-link target="_blank" href="/js/teacherTraining.js">教师研修</el-link>
                     </el-menu-item>
+                    <el-menu-item>
+                        <el-link target="_blank" href="/js/alists-item-info.js">Alist 项目信息</el-link>
+                    </el-menu-item>
                 </el-sub-menu>
 
                 <el-menu-item>
