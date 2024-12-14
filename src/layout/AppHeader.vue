@@ -11,7 +11,7 @@
                 </el-menu-item>
 
                 <el-sub-menu index="1">
-                    <template #title>权威文档</template>
+                    <template #title>相关文档</template>
                     <el-menu-item>
                         <el-link target="_blank" href="https://element-plus.org/zh-CN/">Element-plus</el-link>
                     </el-menu-item>
@@ -19,10 +19,7 @@
                         <el-link target="_blank" href="https://router.vuejs.org/zh/">Vue-Router</el-link>
                     </el-menu-item>
                     <el-menu-item>
-                        <el-link target="_blank" href="https://gopl-zh.github.io/">Go</el-link>
-                    </el-menu-item>
-                    <el-menu-item>
-                        <el-link target="_blank" href="https://docker-practice.github.io/zh-cn/">Docker</el-link>
+                        <el-link target="_blank" href="https://cn.vuejs.org/">Vue3</el-link>
                     </el-menu-item>
                 </el-sub-menu>
 

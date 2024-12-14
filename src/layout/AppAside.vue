@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { Cloudy, Coin, Finished, Help, Link, Tickets } from '@element-plus/icons-vue';
+import { Cloudy, Coin, Connection, Finished, Help, Link, Tickets } from '@element-plus/icons-vue';
 import { isAsideCollapse } from "../util/const";
 
 const views = [
@@ -26,6 +26,7 @@ const views = [
     { path: '/ask', text: 'Yes or No', icon: Help },
     { path: '/fk', text: 'fk-token 管理', icon: Coin },
     { path: '/subscription', text: '结点订阅管理', icon: Link },
+    { path: '/apiendpoint', text: 'API端点管理', icon: Connection },
 ]
 </script>
 
