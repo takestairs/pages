@@ -1,4 +1,6 @@
-// console 输出代理控制 对象，只给往终端输出信息的函数加锁
+/**
+ * console 输出代理控制 对象，只给往终端输出信息的函数加锁，其他函数不加锁
+ */
 const console = (function () {
     // 输出控制key
     const CONSOLE_KEY = {}
@@ -31,7 +33,10 @@ const console = (function () {
     })
 })();
 
-// 监听器拦截
+/**
+     * 监听器拦截
+     * @param {Array<string>} types
+     */
 (function (types) {
     const oldadd = EventTarget.prototype.addEventListener
     EventTarget.prototype.addEventListener = function (...args) {
@@ -48,12 +53,12 @@ const console = (function () {
 })(['visibilitychange']);
 
 /**
- * 异步检查dom元素，返回promise。当只匹配到1个dom元素时，兑现这个dom元素。匹配多个dom是返回List。
+ * 异步检查dom元素，返回promise。当只匹配到1个dom元素时，兑现这个dom元素。匹配多个dom时返回List。
  * 如果保证selector一定能匹配，则不要给timeout参数。
  * @param {string} selector 
- * @param {ParentNode} parentDom
- * @param {number} refresh 
- * @param {number} timeout 
+ * @param {ParentNode} [parentDom] 默认为 document
+ * @param {number} [timeout]
+ * @param {number} [refresh] 
  * @returns {Promise<NodeListOf<Element> | Element>}
  */
 async function domQueryPromise(selector, parentDom, timeout, refresh = 1000) {

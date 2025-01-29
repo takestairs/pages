@@ -33,7 +33,7 @@
 <script setup>
 import axios from 'axios';
 import { computed, reactive, ref, watch, onMounted } from 'vue'
-import { auth } from "../util/const";
+import { auth } from "../const/commom";
 import { makeRefWithLocalStorge } from '../util/ReactiveUtil';
 import { ElMessage, ElMessageBox } from 'element-plus';
 

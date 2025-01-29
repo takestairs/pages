@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import {auth} from "../util/const"
+import {auth} from "../const/commom"
 import {onMounted} from "vue"
 
 onMounted(() => {

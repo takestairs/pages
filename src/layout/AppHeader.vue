@@ -38,11 +38,7 @@
                         <el-link target="_blank" href="/js/alists-item-info.js">Alist 项目信息</el-link>
                     </el-menu-item>
                 </el-sub-menu>
-
-                <el-menu-item>
-                    <el-link target="_blank" href="/cf-ip-scanner.html">Cloudflare IP 扫描器</el-link>
-                </el-menu-item>
-
+                
                 <el-menu-item>
                     <el-link target="_blank" href="https://crypt-aax.pages.dev">加密猫</el-link>
                 </el-menu-item>
@@ -59,6 +55,6 @@
 import DayNightModeButton from "../components/DayNightModeButton.vue"
 
 import { Expand, Fold } from "@element-plus/icons-vue";
-import { isAsideCollapse } from "../util/const"
+import { isAsideCollapse } from "../const/commom"
 
 </script>

@@ -86,7 +86,7 @@
 
 <script setup>
 import axios from 'axios';
-import { auth } from '../util/const';
+import { auth } from '../const/commom';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { makeRefWithLocalStorge } from '../util/ReactiveUtil';
 import { ElMessage } from 'element-plus';

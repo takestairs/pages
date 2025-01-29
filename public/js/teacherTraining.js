@@ -3,7 +3,7 @@
 // @description  模拟点击，挂机完成页面的所有任务点
 // @namespace    http://tampermonkey.net/
 // @author       Guitar
-// @version      2024-08-29
+// @version      2025-01-29
 // @updateURL    https://pages.274452.xyz/js/teacherTraining.js
 // @downloadURL  https://pages.274452.xyz/js/teacherTraining.js
 // @match        https://basic.smartedu.cn/teacherTraining/courseDetail*
@@ -14,40 +14,10 @@
 (function () {
     'use strict';
 
-    // console 输出代理控制 对象，只给往终端输出信息的函数加锁
-    const console = (function () {
-        // 输出控制key
-        const CONSOLE_KEY = {}
-        const lockProperties = ["log", "warn", "debug", "error", "info", "dir", "table"]
-
-        // 函数锁代理
-        const lockConsoleProxy = new Proxy(window.console, {
-            get(target, property) {
-                if (lockProperties.includes(property) && target[property] instanceof Function) {
-                    return function (k, ...args) {
-                        if (k === CONSOLE_KEY) {
-                            target[property](...args)
-                        }
-                    }
-                } else {
-                    return target[property]
-                }
-            }
-        })
-        window.console = lockConsoleProxy
-
-        return new Proxy(window.console, {
-            get(target, property) {
-                if (lockProperties.includes(property) && target[property] instanceof Function) {
-                    return function (...args) { return target[property](CONSOLE_KEY, ...args) }
-                } else {
-                    return target[property]
-                }
-            }
-        })
-    })();
-
-    // 监听器拦截
+    /**
+     * 监听器拦截
+     * @param {Array<string>} types
+     */
     (function (types) {
         const oldadd = EventTarget.prototype.addEventListener
         EventTarget.prototype.addEventListener = function (...args) {
@@ -64,12 +34,12 @@
     })(['visibilitychange']);
 
     /**
-     * 异步检查dom元素，返回promise。当只匹配到1个dom元素时，兑现这个dom元素。匹配多个dom是返回List。
+     * 异步检查dom元素，返回promise。当只匹配到1个dom元素时，兑现这个dom元素。匹配多个dom时返回List。
      * 如果保证selector一定能匹配，则不要给timeout参数。
      * @param {string} selector 
-     * @param {ParentNode} parentDom
-     * @param {number} refresh 
-     * @param {number} timeout 
+     * @param {ParentNode} [parentDom] 默认为 document
+     * @param {number} [timeout]
+     * @param {number} [refresh] 
      * @returns {Promise<NodeListOf<Element> | Element>}
      */
     async function domQueryPromise(selector, parentDom, timeout, refresh = 1000) {
@@ -102,7 +72,7 @@
 
         // let i = tasks.indexOf(document.querySelector("div.resource-item.resource-item-train.resource-item-active"))
         let i = tasks.findIndex(e => !isTaskFinished(e))
-        // console.log(`第一个未完成的任务是第${i}个`);
+        console.log(`第一个未完成的任务是第 ${i+1} 个`);
         changeToTask(i)
 
         // 3. 开始挂机
@@ -115,7 +85,7 @@
 
         function changeToTask(i) {
             tasks[i].click()
-            console.log(`切换至任务${i}`);
+            console.log(`切换至任务 ${i+1}`);
             playVideo()
         }
 
@@ -137,11 +107,13 @@
                 if (!video.AUTO) {
                     // 添加 'pause' 事件监听器
                     video.addEventListener('pause', function () {
+                        console.log("监测到暂停，自动继续播放");
                         playVideo();
                     });
 
                     // 播放完毕时执行回调
                     video.addEventListener('ended', () => {
+                        debugger
                         // 当前正在学习的任务点
                         if (i <= tasks.length - 1) {
                             // switch task to next

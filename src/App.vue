@@ -21,7 +21,6 @@
 </template>
 
 <script setup>
-import { KeepAlive } from "vue";
 
 import AppAside from "./layout/AppAside.vue";
 import AppHeader from "./layout/AppHeader.vue";

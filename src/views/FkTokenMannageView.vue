@@ -36,7 +36,7 @@
 <script setup>
 import axios from 'axios';
 import { ref, reactive, onMounted, computed } from 'vue';
-import { auth } from '../util/const';
+import { auth } from '../const/commom';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 const CHECK = "https://chat.oaifree.com/token/info/";
