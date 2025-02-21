@@ -14,6 +14,7 @@
             </el-main>
 
             <el-footer>
+                <el-divider />
                 <OneSentence />
             </el-footer>
         </el-container>

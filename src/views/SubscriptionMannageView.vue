@@ -33,7 +33,7 @@
 <script setup>
 import axios from 'axios';
 import { computed, reactive, ref, watch, onMounted } from 'vue'
-import { auth } from "../const/commom";
+import { apiPrefix, auth } from "../const/commom";
 import { makeRefWithLocalStorge } from '../util/ReactiveUtil';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
@@ -79,7 +79,7 @@ function cacheStatusPromise(name, provider) {
 }
 
 function getSubcription() {
-    axios.get(`https://api.274452.xyz/subcription/${origin.value}`, {
+    axios.get(`${apiPrefix}/subcription/${origin.value}`, {
         headers: {
             Authorization: auth.value
         }
@@ -125,7 +125,7 @@ function saveSubcription() {
         confirmButtonText: 'OK',
         callback: (action) => {
             if (action == 'confirm') {
-                axios.post(`https://api.274452.xyz/subcription/${origin.value}`, Array.from(nodeUrlSet.value), {
+                axios.post(`${apiPrefix}/subcription/${origin.value}`, Array.from(nodeUrlSet.value), {
                     headers: { "Authorization": auth.value, "Content-Type": "application/json" }
                 }).then(r => ElMessage.success(`成功保存 ${nodeUrlSet.value.size} 个结点`)).catch(e => ElMessage.error(e))
             } else {

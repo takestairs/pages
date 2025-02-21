@@ -15,19 +15,36 @@
 </template>
 
 <script setup>
-import { Cloudy, Coin, Connection, Finished, Help, Link, Tickets } from '@element-plus/icons-vue';
-import { isAsideCollapse } from "../const/commom";
+import { Cloudy, Connection, Finished, Help, Link, Picture, Tickets } from '@element-plus/icons-vue';
+import { apiPrefix, isAsideCollapse } from "../const/commom";
+import { onMounted, reactive } from 'vue';
+import { auth } from '../const/commom';
+import axios from 'axios';
 
-const views = [
+const views = reactive([
     // { path: '/', text: 'Home' },
     { path: '/dream', text: '梦想成真计算器', icon: Finished },
     { path: '/form', text: '表单收集', icon: Tickets },
     { path: '/weather', text: '天气查询', icon: Cloudy },
     { path: '/ask', text: 'Yes or No', icon: Help },
     // { path: '/fk', text: 'fk-token 管理', icon: Coin },
+    { path: '/text2image', text: '文生图', icon: Picture },
+])
+const authViews = [
     { path: '/subscription', text: '结点订阅管理', icon: Link },
     { path: '/apiendpoint', text: 'API端点管理', icon: Connection },
 ]
+onMounted(() => {
+    auth.value = localStorage.getItem("auth")
+
+    axios.get(apiPrefix + '/oauth', {
+        headers: { "Authorization": auth.value }
+    }).then(res => {
+        if (res.data) {
+            views.push(...authViews)
+        }
+    })
+})
 </script>
 
 <style scoped>

@@ -2,7 +2,7 @@
     <el-text tag="div" type="info">{{ content }}</el-text>
     <el-text tag="div" type="info" style="text-align: right;">{{ author }}</el-text>
 
-    <el-space wrap>
+    <el-space wrap style="margin-bottom: 20px">
         <el-select v-model="lang" @change=updateSentence style="width: 80px" size="small">
             <el-option value="zh" label="中文"></el-option>
             <el-option value="en" label="英文"></el-option>

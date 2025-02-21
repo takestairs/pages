@@ -36,7 +36,7 @@
 <script setup>
 import axios from 'axios';
 import { ref, reactive, onMounted, computed } from 'vue';
-import { auth } from '../const/commom';
+import { apiPrefix, auth } from '../const/commom';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 const CHECK = "https://chat.oaifree.com/token/info/";
@@ -96,7 +96,7 @@ function saveToken() {
         confirmButtonText: 'OK',
         callback: (action) => {
             if (action == 'confirm') {
-                axios.post("https://api.274452.xyz/upstash/plus", plusTokens.value, {
+                axios.post(apiPrefix + "/upstash/plus", plusTokens.value, {
                     headers: { "Authorization": auth.value, "Content-Type": "application/json" }
                 }).then(r => ElMessage.success(r.data)).catch(e => ElMessage.error(e))
             } else {
@@ -137,7 +137,7 @@ function cleanInvalid() {
 }
 
 onMounted(() => {
-    axios.get("https://api.274452.xyz/upstash/plus").then(r => r.data).then(d => {
+    axios.get(apiPrefix + "/upstash/plus").then(r => r.data).then(d => {
         d.forEach(v => {
             plusTokens.value.push(v.replace(INPUT_PREFIX, ""));
         });

@@ -86,7 +86,7 @@
 
 <script setup>
 import axios from 'axios';
-import { auth } from '../const/commom';
+import { apiPrefix, auth } from '../const/commom';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { makeRefWithLocalStorge } from '../util/ReactiveUtil';
 import { ElMessage } from 'element-plus';
@@ -183,7 +183,7 @@ function checkModel(realModel) {
     })
 }
 function getEndpoints() {
-    axios.get("https://api.274452.xyz/upstash/" + branch.value, {
+    axios.get(apiPrefix + "/upstash/" + branch.value, {
         headers: {
             Authorization: auth.value
         }
