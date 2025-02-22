@@ -1,6 +1,6 @@
 {
-  "name": "testvue3",
-  "version": "0.0.0",
+  "name": "vue3-pages",
+  "version": "25.02.22",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -17,7 +17,7 @@
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
-    "vite": "^4.3.9"
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.1.1"
   }
 }
