@@ -9,6 +9,7 @@ import SubscriptionMannageView from '../views/SubscriptionMannageView.vue'
 import HomeView from '../views/HomeView.vue'
 import ApiEndpointsMannageView from '../views/ApiEndpointsMannageView.vue'
 import TextToImageView from '../views/TextToImageView.vue'
+import T from '../views/T.vue'
 
 export const routes = [
     // { path: '/:pathMatch(.*)', component: NotFoundComponent },
@@ -21,6 +22,7 @@ export const routes = [
     { path: '/subscription', component: SubscriptionMannageView },
     { path: '/apiendpoint', component: ApiEndpointsMannageView },
     { path: '/text2image', component: TextToImageView },
+    { path: '/test', component: T },
 ]
 
 const router = createRouter({
