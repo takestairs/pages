@@ -42,7 +42,7 @@
 
                     <el-tooltip trigger="hover" placement="top-start" content="图片生成时候的种子值，如果不提供，则算法自动用一个随机生成的数字作为种子。">
 
-                        <el-form-item label="随机种子">
+                        <el-form-item label="随机种子" required>
                             <el-input v-model="parameters.seed" style="max-width: 60%;"></el-input>
                             <el-button @click="parameters.seed = Math.floor(Math.random() * 4294967290)"
                                 style="margin-left: 20px">随机
@@ -89,13 +89,8 @@ import axios from 'axios';
 import { apiPrefix, auth } from "../const/commom";
 import { onMounted, reactive, ref, watch } from 'vue';
 import { ElMessage } from 'element-plus';
+import prompts from "../const/sdPrompts"
 
-const prompts = [
-    {
-        prompt: `1boy, guts \(berserk\), (painterly:1.2, pastel \(medium\):1.3), portrait, <lora:add-detail-xl:1>,masterpiece,best quality, black hair, spiked hair, thick eyebrows, scar on face, smile, upper teeth only,  strong facial features, muscular build, bandaged wrists, black tunic, leather belt, brown belt, weathered brown cape, dragonslayer \(sword\), sword on back, blue sky with fluffy clouds in the background, golden sunlight casting a warm glow, standing in a field of vibrant wildflowers, mountains in the distance, wind subtly moving his cloak, relaxed, high-detail fantasy artwork, adventurous,heroic atmosphere, from the side, dynamic angle, looking up`,
-        negative_prompt: "worst quality, bad quality, low quality, watermark"
-    }
-]
 const models = [
     "stable-diffusion-xl",
     "stable-diffusion-v1.5"
@@ -111,7 +106,7 @@ const parameters = reactive({
     "width": 1024,
     "height": 1024,
     "steps": 50,
-    "seed": null,
+    "seed": Math.floor(Math.random() * 4294967290),
     "scale": 3
 })
 
@@ -128,7 +123,7 @@ function selectPrompt(p) {
     input.negative_prompt = p.negative_prompt || ""
 }
 function generateImage() {
-    axios.post(apiPrefix + "/aigc/text_to_image", {
+    axios.post(apiPrefix + "/aigc/text_to_image/image-synthesis", {
         "model": model.value,
         "input": input,
         "parameters": {

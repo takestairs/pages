@@ -132,7 +132,7 @@ onMounted(() => {
 })
 
 function generateImage() {
-    axios.post(apiPrefix + "/aigc/text_to_image", {
+    axios.post(apiPrefix + "/aigc/text_to_image/image-synthesis", {
         "model": model.value,
         "input": {
             "prompt": inputText.value
