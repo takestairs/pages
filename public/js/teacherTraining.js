@@ -3,7 +3,7 @@
 // @description  模拟点击，挂机完成页面的所有任务点
 // @namespace    http://tampermonkey.net/
 // @author       Guitar
-// @version      2025-01-29
+// @version      2025-07-25
 // @updateURL    https://pages.274452.xyz/js/teacherTraining.js
 // @downloadURL  https://pages.274452.xyz/js/teacherTraining.js
 // @match        https://basic.smartedu.cn/teacherTraining/courseDetail*
@@ -72,6 +72,11 @@
 
         // let i = tasks.indexOf(document.querySelector("div.resource-item.resource-item-train.resource-item-active"))
         let i = tasks.findIndex(e => !isTaskFinished(e))
+        if (i == -1) {
+            console.log("所有任务点均已完成");
+            return
+        }
+
         console.log(`第一个未完成的任务是第 ${i+1} 个`);
         changeToTask(i)
 
