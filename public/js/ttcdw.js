@@ -13,6 +13,55 @@
 
 (function () {
     'use strict';
+    const Toast = {
+        container: null,
+
+        init() {
+            if (this.container) return;
+
+            this.container = document.createElement('div');
+            this.container.style.position = 'fixed';
+            this.container.style.top = '15px';
+            this.container.style.right = '15px';
+            this.container.style.zIndex = '999999';
+            this.container.style.maxWidth = '90%';
+            document.body.appendChild(this.container);
+        },
+
+        show(message, type = 'info', duration = 3000) {
+            this.init();
+
+            const toast = document.createElement('div');
+            toast.style.padding = '10px 15px';
+            toast.style.marginBottom = '10px';
+            toast.style.borderRadius = '4px';
+            toast.style.color = 'white';
+            toast.style.backgroundColor = type === 'error' ? '#e74c3c' :
+                type === 'success' ? '#2ecc71' :
+                    type === 'warning' ? '#f39c12' : '#3498db';
+            toast.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+            toast.style.transition = 'opacity 0.3s';
+            toast.style.overflow = 'hidden';
+            toast.style.textOverflow = 'ellipsis';
+            toast.style.whiteSpace = 'nowrap';
+
+            toast.textContent = message;
+            this.container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    if (toast.parentNode) toast.parentNode.removeChild(toast);
+                }, 300);
+            }, 3000);
+        },
+        // 便捷方法
+        info(msg, dur) { this.show(msg, 'info', dur); },
+        success(msg, dur) { this.show(msg, 'success', dur); },
+        error(msg, dur) { this.show(msg, 'error', dur); },
+        warn(msg, dur) { this.show(msg, 'warning', dur); }
+    }
+
     /**
      * 异步检查dom元素，返回promise。当只匹配到1个dom元素时，兑现这个dom元素。匹配多个dom时返回List。
      * 如果保证selector一定能匹配，则不要给timeout参数。
@@ -46,7 +95,7 @@
     let unfinishIndex = -1
     function changeToNextUnfinished() {
         if (unfinishIndex < unfinishList.length - 1) {
-            console.log(`切换至 ${unfinishList[++unfinishIndex].querySelector("div.videorevision-catalogue-single-name.ellipsis").textContent}`);
+            Toast.info(`切换至 ${unfinishList[++unfinishIndex].querySelector("div.videorevision-catalogue-single-name.ellipsis").textContent}`);
 
             unfinishList[unfinishIndex].click()
             domQueryPromise("video").then(applyVideoSettings)
@@ -54,13 +103,19 @@
         return false
     }
     function applyVideoSettings(v) {
-        v.muted = true
         v.addEventListener("playing", () => {
+            v.muted = true
             v.playbackRate = 2.0
         })
         // v.play()
         v.addEventListener("ended", changeToNextUnfinished)
-        console.log("Applied.");
+        setTimeout(() => {
+            const vtag = document.querySelector("video")
+            if (vtag.playbackRate != 2.0) {
+                vtag.playbackRate = 2.0
+            }
+        }, 3000)
+        Toast.info("Applied.");
     }
 
     domQueryPromise("div.videorevision-catalogue-single").then(list => {
@@ -69,7 +124,6 @@
                 unfinishList.push(video)
             }
         }
-        debugger
         console.log(unfinishList);
 
         changeToNextUnfinished()

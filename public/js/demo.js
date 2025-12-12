@@ -34,7 +34,7 @@ const console = (function () {
 })();
 
 /**
-     * 监听器拦截
+     * 监听器拦截，立即运行函数，配合 @run-at document-start
      * @param {Array<string>} types
      */
 (function (types) {
@@ -79,4 +79,60 @@ async function domQueryPromise(selector, parentDom, timeout, refresh = 1000) {
             }, timeout); // maxWaitTime 必须定义为最大等待时间（毫秒）
         }
     });
+}
+
+/**
+ * 轻量Toast通知系统
+ * Toast.info('')
+ * Toast.success('')
+ * Toast.error('')
+ * Toast.warn('')
+ */
+const Toast = {
+    container: null,
+
+    init() {
+        if (this.container) return;
+
+        this.container = document.createElement('div');
+        this.container.style.position = 'fixed';
+        this.container.style.top = '15px';
+        this.container.style.right = '15px';
+        this.container.style.zIndex = '999999';
+        this.container.style.maxWidth = '90%';
+        document.body.appendChild(this.container);
+    },
+
+    show(message, type = 'info', duration = 3000) {
+        this.init();
+
+        const toast = document.createElement('div');
+        toast.style.padding = '10px 15px';
+        toast.style.marginBottom = '10px';
+        toast.style.borderRadius = '4px';
+        toast.style.color = 'white';
+        toast.style.backgroundColor = type === 'error' ? '#e74c3c' :
+            type === 'success' ? '#2ecc71' :
+                type === 'warning' ? '#f39c12' : '#3498db';
+        toast.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+        toast.style.transition = 'opacity 0.3s';
+        toast.style.overflow = 'hidden';
+        toast.style.textOverflow = 'ellipsis';
+        toast.style.whiteSpace = 'nowrap';
+
+        toast.textContent = message;
+        this.container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 300);
+        }, duration);
+    },
+    // 便捷方法
+    info(msg, dur) { this.show(msg, 'info', dur); },
+    success(msg, dur) { this.show(msg, 'success', dur); },
+    error(msg, dur) { this.show(msg, 'error', dur); },
+    warn(msg, dur) { this.show(msg, 'warning', dur); }
 }
