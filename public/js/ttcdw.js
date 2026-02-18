@@ -4,8 +4,8 @@
 // @namespace    http://tampermonkey.net/
 // @author       Guitar
 // @version      2025-12-08
-// @updateURL    https://pages.274452.xyz/js/ttcdw.js
-// @downloadURL  https://pages.274452.xyz/js/ttcdw.js
+// @updateURL    https://pages.535952.xyz/js/ttcdw.js
+// @downloadURL  https://pages.535952.xyz/js/ttcdw.js
 // @match        https://www.ttcdw.cn/p/course/videorevision/*
 // @run-at       document-end
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=www.ttcdw.cn
@@ -111,6 +111,7 @@
         v.addEventListener("ended", changeToNextUnfinished)
         setTimeout(() => {
             const vtag = document.querySelector("video")
+            v.muted = true
             if (vtag.playbackRate != 2.0) {
                 vtag.playbackRate = 2.0
             }

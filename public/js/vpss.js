@@ -2,8 +2,8 @@
 // @name         VPS-s
 // @namespace    http://tampermonkey.net/
 // @version      2024-08-25
-// @updateURL    https://pages.274452.xyz/js/vpss.js
-// @downloadURL  https://pages.274452.xyz/js/vpss.js
+// @updateURL    https://pages.535952.xyz/js/vpss.js
+// @downloadURL  https://pages.535952.xyz/js/vpss.js
 // @description  自动填写表单
 // @author       You
 // @match        https://hax.co.id/create-vps/

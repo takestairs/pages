@@ -4,8 +4,8 @@
 // @namespace    http://tampermonkey.net/
 // @author       Guitar
 // @version      2025-05-09
-// @updateURL    https://pages.274452.xyz/js/pecec.js
-// @downloadURL  https://pages.274452.xyz/js/pecec.js
+// @updateURL    https://pages.535952.xyz/js/pecec.js
+// @downloadURL  https://pages.535952.xyz/js/pecec.js
 // @match        https://sy.pecec.com.cn/p/t_pc/course_pc_detail/video/*
 // @run-at       document-start
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=sy.pecec.com.cn

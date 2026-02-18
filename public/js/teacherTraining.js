@@ -4,8 +4,8 @@
 // @namespace    http://tampermonkey.net/
 // @author       Guitar
 // @version      2025-07-25
-// @updateURL    https://pages.274452.xyz/js/teacherTraining.js
-// @downloadURL  https://pages.274452.xyz/js/teacherTraining.js
+// @updateURL    https://pages.535952.xyz/js/teacherTraining.js
+// @downloadURL  https://pages.535952.xyz/js/teacherTraining.js
 // @match        https://basic.smartedu.cn/teacherTraining/courseDetail*
 // @run-at       document-start
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=smartedu.cn

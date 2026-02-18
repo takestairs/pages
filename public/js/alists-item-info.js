@@ -5,7 +5,7 @@
 // @description  try to take over the world!
 // @author       You
 // @match        http://192.168.31.33:5244/*
-// @match        https://alist.274452.xyz:5255/*
+// @match        https://alist.535952.xyz:5255/*
 // @icon         https://cdn.jsdelivr.net/gh/alist-org/logo@main/logo.svg
 // @grant        none
 // ==/UserScript==
