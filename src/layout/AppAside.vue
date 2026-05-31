@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { Cloudy, Connection, Finished, Help, Link, Picture, Tickets } from '@element-plus/icons-vue';
+import { Cloudy, Compass, Connection, Download, Finished, Help, Link, Picture, QuestionFilled, Tickets } from '@element-plus/icons-vue';
 import { markRaw } from 'vue';
 import { apiPrefix, isAsideCollapse } from "../const/commom";
 import { onMounted, reactive } from 'vue';
@@ -27,9 +27,10 @@ const views = reactive([
     { path: '/dream', text: '梦想成真计算器', icon: markRaw(Finished) },
     // { path: '/form', text: '表单收集', icon: markRaw(Tickets) },
     { path: '/weather', text: '天气查询', icon: markRaw(Cloudy) },
-    { path: '/ask', text: 'Yes or No', icon: markRaw(Help) },
+    { path: '/ask', text: 'Yes or No', icon: markRaw(Compass) },
     // { path: '/fk', text: 'fk-token 管理', icon: markRaw(Coin) },
     { path: '/text2image', text: '文生图', icon: markRaw(Picture) },
+    { path: '/172mix', text: '172mix下载', icon: markRaw(Download) },
 ])
 const authViews = [
     { path: '/subscription', text: '结点订阅管理', icon: markRaw(Link) },
