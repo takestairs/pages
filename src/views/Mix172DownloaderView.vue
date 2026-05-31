@@ -24,15 +24,21 @@ const loading = ref(false);
 // 模拟获取文件信息的函数
 async function getFileInfo(url) {
 
-    return fetch(`${apiPrefix}/tools/proxy.transparent/${url}`).then(r => r.text()).then(html => {
-        const scripts = Document.parseHTMLUnsafe(html).querySelectorAll('script')
+    return fetch(`${apiPrefix}/tools/proxy.transparent/${url}`,{
+        headers: {
+            "x-user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0"
+        }
+    }).then(r => r.text()).then(html => {
+        const scripts = new DOMParser().parseFromString(html, 'text/html').querySelectorAll('script');
 
         let mediaObj = {}
         // 遍历 script 标签，寻找 media 变量
         scripts.forEach(script => {
             const scriptContent = script.textContent.trim();
+            console.log(scriptContent);
 
             if (scriptContent.startsWith("var media = {")) {
+                
                 const getMedia = new Function(scriptContent.split("$")[0] + ' return media;')
 
                 mediaObj = getMedia()
@@ -55,6 +61,10 @@ async function handleDownload() {
     try {
         // 调用获取文件信息的函数
         const { downloadUrl, fileName } = await getFileInfo(form.value.url);
+        if (!downloadUrl) {
+            ElMessage.warning('链接解析失败');
+            return;
+        }
 
         const response = await fetch(`${apiPrefix}/tools/proxy.transparent/${downloadUrl}`, {
             method: 'GET',
