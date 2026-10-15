@@ -26,16 +26,13 @@
                 <el-sub-menu index="2">
                     <template #title>油猴脚本</template>
                     <el-menu-item>
-                        <el-link target="_blank" href="/js/vpss.js">VPS填单</el-link>
-                    </el-menu-item>
-                    <el-menu-item>
-                        <el-link target="_blank" href="/js/plusvv.js">Plus镜像</el-link>
-                    </el-menu-item>
-                    <el-menu-item>
-                        <el-link target="_blank" href="/js/teacherTraining.js">教师研修</el-link>
-                    </el-menu-item>
-                    <el-menu-item>
                         <el-link target="_blank" href="/js/alists-item-info.js">Alist 项目信息</el-link>
+                    </el-menu-item>
+                    <el-menu-item>
+                        <el-link target="_blank" href="/js/teacherTraining.user.js">教师研修</el-link>
+                    </el-menu-item>
+                    <el-menu-item>
+                        <el-link target="_blank" href="/js/pecec.js">人教师苑</el-link>
                     </el-menu-item>
                 </el-sub-menu>
                 

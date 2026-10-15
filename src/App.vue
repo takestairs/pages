@@ -7,7 +7,7 @@
 
             <el-main>
                 <router-view v-slot="{ Component }">
-                    <keep-alive include="FkTokenMannageView,SubscriptionMannageView,ApiEndpointsMannageView">
+                    <keep-alive include="SubscriptionMannageView">
                         <component :is="Component" />
                     </keep-alive>
                 </router-view>

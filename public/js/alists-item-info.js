@@ -2,10 +2,10 @@
 // @name         Alist Item Info
 // @namespace    http://tampermonkey.net/
 // @version      2024-11-16
-// @description  try to take over the world!
+// @description  已过时
 // @author       You
 // @match        http://192.168.31.33:5244/*
-// @match        https://alist.535952.xyz:5255/*
+// @match        https://alist.535952.xyz:*
 // @icon         https://cdn.jsdelivr.net/gh/alist-org/logo@main/logo.svg
 // @grant        none
 // ==/UserScript==
