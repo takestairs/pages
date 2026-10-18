@@ -29,6 +29,7 @@ const views = reactive([
     { path: '/ask', text: 'Yes or No', icon: markRaw(Compass) },
     { path: '/text2image', text: '文生图', icon: markRaw(Picture) },
     { path: '/172mix', text: '172mix下载', icon: markRaw(Download) },
+    { path: '/nav', text: 'Nav Site', icon: markRaw(Link) },
 ])
 const authViews = [
     { path: '/subscription', text: '结点订阅管理', icon: markRaw(Link) },

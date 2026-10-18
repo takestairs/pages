@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vue Page Routes"
+  short_description: "Register view pages in the router and sidebar"
+  default_prompt: "Use $vue-page-routes to add a new page view to the router and sidebar."

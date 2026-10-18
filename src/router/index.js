@@ -7,6 +7,7 @@ import SubscriptionMannageView from '../views/SubscriptionMannageView.vue'
 import HomeView from '../views/HomeView.vue'
 import TextToImageView from '../views/TextToImageView.vue'
 import Mix172DownloaderView from '../views/Mix172DownloaderView.vue'
+import NavSiteView from '../views/NavSiteView.vue'
 import T from '../views/T.vue'
 
 export const routes = [
@@ -18,6 +19,7 @@ export const routes = [
     { path: '/subscription', component: SubscriptionMannageView },
     { path: '/text2image', component: TextToImageView },
     { path: '/172mix', component: Mix172DownloaderView },
+    { path: '/nav', component: NavSiteView },
     { path: '/test', component: T },
 ]
 
