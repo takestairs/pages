@@ -1,43 +1,47 @@
 <template>
     <div class="container">
         <el-space warp>
-            <el-select v-model="chosen_category" placeholder="选择一个分类" style="width: 100px" @change="getNavs">
+            <el-select v-model="selectedCategory" placeholder="选择一个分类" style="width: 100px" @change="getNavs">
                 <el-option v-for="c in categories" :key="c" :label="c" :value="c"></el-option>
             </el-select>
             <el-text type="info">共 {{ items.length }} 个站点</el-text>
 
-            <el-button @click="getNavs">获取信息</el-button>
-            <el-button @click="clearNavs">清空站点</el-button>
             <el-button @click="saveNavs">保存站点</el-button>
         </el-space>
-        <el-table :data="items" fit table-layout="auto">
-            <el-table-column prop="title" label="title">
+
+        <el-table :data="items" fit stripe table-layout="auto">
+            <el-table-column label="站点信息">
                 <template #default="{ row }">
-                    <el-input v-model="row.title"></el-input>
+                    <el-form :model="row" label-width="auto" >
+                        <el-form-item label="Title">
+                            <el-input v-model="row.title" />
+                        </el-form-item>
+                        <el-form-item label="Desc">
+                            <el-input v-model="row.desc" />
+                        </el-form-item>
+                        <el-form-item label="Link">
+                            <el-input v-model="row.link" />
+                        </el-form-item>
+                    </el-form>
                 </template>
             </el-table-column>
-            <el-table-column prop="desc" label="desc">
+
+            <el-table-column label="logo">
                 <template #default="{ row }">
-                    <el-input v-model="row.desc"></el-input>
+                    <el-image :src="row.logo" fit="contain" class="logo-img">
+                        <!-- <template #error>
+                            <el-input v-model="row.logo"></el-input>
+                        </template> -->
+                    </el-image>
                 </template>
             </el-table-column>
-            <el-table-column prop="link" label="link">
-                <template #default="{ row }">
-                    <el-input v-model="row.link"></el-input>
-                </template>
-            </el-table-column>
-            <el-table-column prop="logo" label="logo">
-                <template #default="{ row }">
-                    <el-image v-if="row.logo" :src="row.logo"></el-image>
-                    <el-input v-model="row.logo" placeholder="logo URL"></el-input>
-                </template>
-            </el-table-column>
+
             <el-table-column label="actions">
                 <template #default="{ row }">
                     <el-space direction="vertical" alignment="flex-start">
-                        <el-button @click="visitLink(row.link)">visit link</el-button>
-                        <el-button @click="inferLogo(row)">get logo</el-button>
-                        <el-button type="danger" @click="removeNavItem(row)">delete</el-button>
+                        <el-button @click="visitLink(row.link)">访问</el-button>
+                        <el-button @click="findLogo(row)">查找logo</el-button>
+                        <el-button type="danger" @click="removeNavItem(row)">删除</el-button>
                     </el-space>
                 </template>
             </el-table-column>
@@ -52,14 +56,9 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { apiPrefix, auth } from '../const/commom';
 import { makeRefWithLocalStorge } from '../util/ReactiveUtil';
-import { el } from 'element-plus/es/locales.mjs';
 
-const chosen_category = makeRefWithLocalStorge("", "chosen_category")
-const categories = ref([
-    "AI Chat",
-    "AI Chat/三方",
-    "AI Chat/镜像",
-])
+const selectedCategory = makeRefWithLocalStorge("", "selectedCategory")
+const categories = ref([])
 const items = ref([{
     "title": "测试",
     "desc": "",
@@ -68,13 +67,12 @@ const items = ref([{
 }])
 
 onMounted(() => {
-    chosen_category.value = localStorage.getItem("chosen_category")
     getCategories()
     getNavs()
 })
 
 function getNavs() {
-    axios.get(apiPrefix + "/tools/nav/" + chosen_category.value, {
+    axios.get(apiPrefix + "/resource/nav/" + selectedCategory.value, {
         headers: {
             Authorization: auth.value
         }
@@ -84,7 +82,7 @@ function getNavs() {
     })
 }
 function saveNavs() {
-    axios.post(apiPrefix + "/tools/nav/" + chosen_category.value, items.value, { headers: {
+    axios.post(apiPrefix + "/resource/nav/" + selectedCategory.value, items.value, { headers: {
         "Authorization": auth.value,
         "Content-Type": "application/json"    
     }}).then(res => {
@@ -94,7 +92,7 @@ function saveNavs() {
 }
 
 function getCategories(){
-    axios.get(apiPrefix + "/tools/nav:categories", {
+    axios.get(apiPrefix + "/resource/nav:categories", {
         headers: {
             Authorization: auth.value
         }
@@ -103,20 +101,21 @@ function getCategories(){
         ElMessage.success("获取成功")
     })
 }
-function clearNavs() {
-    items.value = []
-}
 function removeNavItem(item) {
     items.value.splice(items.value.indexOf(item), 1)
 }
 function visitLink(link) {
     window.open(link, '_blank', 'noopener,noreferrer')
 }
-function inferLogo(item) {
-    if (!item.logo) {
-        item.logo = new URL(item.link).origin + '/favicon.ico'
-    } else if (item.logo.endsWith('/favicon.ico')) {
-        item.logo = `https://www.google.com/s2/favicons?sz=64&domain=${new URL(item.link).hostname}`
-    }
+function findLogo(item) {
+    item.logo = `https://a.favicon.im/${new URL(item.link).hostname}`
 }
 </script>
+
+<style scoped>
+.logo-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+}
+</style>

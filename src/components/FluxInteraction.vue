@@ -90,8 +90,6 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { apiPrefix, auth } from "../const/commom";
 import { onMounted, reactive, ref, watch } from 'vue';
 import { ElMessage } from 'element-plus';
 
@@ -132,43 +130,10 @@ onMounted(() => {
 })
 
 function generateImage() {
-    axios.post(apiPrefix + "/aigc/text_to_image/image-synthesis", {
-        "model": model.value,
-        "input": {
-            "prompt": inputText.value
-        },
-        "parameters": parameters
-    }, {
-        headers: {
-            "Authorization": auth.value
-        }
-    }).then(({ data }) => {
-        if (data.message) {
-            ElMessage.error(data.message)
-            return
-        } else {
-            isGenerating.value = true
-            return data.output.task_id
-        }
-    }).then(id => {
-        if (!id) return
-
-        const tid = setInterval(() => {
-            axios.get(`${apiPrefix}/aigc/text_to_image/${id}`).then(({ data }) => {
-                const task_status = data.output.task_status
-                if (task_status === "PENDING" || task_status === "RUNNING") {
-                    return
-                }
-                if (task_status === "SUCCEEDED") {
-                    imageUrl.value = data.output.results[0].url
-                    timeCost.value = (Date.parse(data.output.end_time) - Date.parse(data.output.submit_time)) / 1000
-                } else {
-                    ElMessage.error(data.output.message || `task_status: ${task_status}`)
-                }
-                isGenerating.value = false
-                clearInterval(tid)
-            })
-        }, 3000)
-    })
+    isGenerating.value = true
+    setTimeout(() => {
+        ElMessage.error("Call API Failed")
+        isGenerating.value = false
+    }, 3000)
 }
 </script>

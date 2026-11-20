@@ -4,44 +4,29 @@
             <el-menu-item index="/">
                 <h1>UIs</h1>
             </el-menu-item>
-            <el-menu-item v-for="view in views" :key="view.path" :index="view.path">
-                <el-icon v-if="view.icon">
-                    <component :is="view.icon" />
+            <el-menu-item v-for="item in menuItems" :key="item.path" :index="item.path">
+                <el-icon v-if="item.icon">
+                    <component :is="item.icon" />
                 </el-icon>
-                <template #title>{{ view.text }}</template>
+                <template #title>{{ item.text }}</template>
             </el-menu-item>
         </el-menu>
     </el-aside>
 </template>
 
 <script setup>
-import { Cloudy, Compass, Connection, Download, Finished, Help, Link, Picture, QuestionFilled, Tickets } from '@element-plus/icons-vue';
-import { markRaw } from 'vue';
-import { apiPrefix, isAsideCollapse } from "../const/commom";
+import { apiPrefix, isAsideCollapse, auth } from "../const/commom";
 import { onMounted, reactive } from 'vue';
-import { auth } from '../const/commom';
 import axios from 'axios';
+import { getAuthMenuItems, getMenuItems } from '../router/routes';
 
-const views = reactive([
-    // { path: '/', text: 'Home' },
-    { path: '/dream', text: '梦想成真计算器', icon: markRaw(Finished) },
-    { path: '/weather', text: '天气查询', icon: markRaw(Cloudy) },
-    { path: '/ask', text: 'Yes or No', icon: markRaw(Compass) },
-    { path: '/text2image', text: '文生图', icon: markRaw(Picture) },
-    { path: '/172mix', text: '172mix下载', icon: markRaw(Download) },
-    { path: '/nav', text: 'Nav Site', icon: markRaw(Link) },
-])
-const authViews = [
-    { path: '/subscription', text: '结点订阅管理', icon: markRaw(Link) },
-]
+const menuItems = reactive(getMenuItems())
 onMounted(() => {
-    auth.value = localStorage.getItem("auth")
-
     axios.get(apiPrefix + '/oauth', {
         headers: { "Authorization": auth.value }
     }).then(res => {
         if (res.data) {
-            views.push(...authViews)
+            menuItems.push(...getAuthMenuItems())
         }
     })
 })

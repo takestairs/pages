@@ -1,8 +1,7 @@
 <template>
     <el-space warp>
-        <el-select v-model="branch" placeholder="Select a Branch" style="width: 80px">
-            <el-option label="自建" value="private" />
-            <el-option label="公共" value="public" />
+        <el-select v-model="selectedToken" placeholder="Select a Token" style="width: 80px">
+            <el-option v-for="t in tokens" :value="t" />
         </el-select>
         <el-button @click="getSubcription">获取结点</el-button>
 
@@ -22,7 +21,7 @@
             <template #default="scope">
                 <el-button @click="deleteNodeUrl(scope.row.url)">删除</el-button>
                 <el-button @click="copyNodeUrl(scope.row.url)">复制</el-button>
-                <el-button v-if="scope.row.url.startsWith('http')" @click="checkSubUrl(scope.row.url)">测活</el-button>
+                <el-button v-if="scope.row.url.startsWith('sub64://')" @click="checkSubUrl(scope.row.url)">测活</el-button>
             </template>
         </el-table-column>
 
@@ -32,54 +31,37 @@
 
 <script setup>
 import axios from 'axios';
-import { computed, reactive, ref, watch, onMounted } from 'vue'
+import { computed, reactive, ref, onMounted } from 'vue'
 import { apiPrefix, auth } from "../const/commom";
-import { makeRefWithLocalStorge } from '../util/ReactiveUtil';
+import { globleStatus, makeRefWithLocalStorge, setGlobleStatus } from '../util/ReactiveUtil';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
-// 使用 ref 定义局部可变数据
 const nodeUrlSet = ref(new Set())
 const userInput = ref("")
-const branch = makeRefWithLocalStorge("", "branch")
-onMounted(() => {
-    branch.value = localStorage.getItem("branch")
-})
+const selectedToken = makeRefWithLocalStorge("public", "selectedToken")
 
-const origin = computed(() => {
-    return {
-        "public": "public",
-        "private": "self-raw"
-    }[branch.value]
+const tokens = reactive([])
+onMounted(()=>{
+    axios.get(`${apiPrefix}/subcription`, {
+        headers: {
+            Authorization: auth.value
+        }
+    }).then(r => r.data).then(data => {
+        tokens.push(...data)
+        ElMessage.success(`获取类别${data.length}个`)
+    }).catch(e => ElMessage.error(e))
 })
 
 const showData = computed(() => {
     return Array.from(nodeUrlSet.value).map(url => ({
         slice: getNodeName(url),
         url: url,
-        status: status.get(url)
+        status: globleStatus.get(url)
     }))
 })
 
-const status = reactive(new Map());
-/**
- * 缓存 promise，当 promise 兑现时，会触发status的响应式。
- * 需要响应式的地方： {{ status.get(name) }}
- * promise 的地方：cacheStatusPromise(name, promise)
- * @param {Promise<string> | Function} provider 
- */
-function cacheStatusPromise(name, provider) {
-    if (provider instanceof Promise) {
-        status.set(name, "waiting")
-        provider.then(v => {
-            status.set(name, v)
-        })
-    } else if (provider instanceof Function) {
-        status.set(name, provider())
-    }
-}
-
 function getSubcription() {
-    axios.get(`${apiPrefix}/subcription/${origin.value}`, {
+    axios.get(`${apiPrefix}/subcription/${selectedToken.value}`, {
         headers: {
             Authorization: auth.value
         }
@@ -107,13 +89,14 @@ function getNodeName(nodeUrl) {
     let n = decodeURIComponent(nodeUrl.substring(nodeUrl.indexOf("#") + 1))
     if (n.startsWith("http")) {
         n = new URL(n).hostname
+    } else if (n.startsWith("sub64://")) {
+        n = "sub64://" + new URL(n.replace("sub64://")).hostname
     } else if (n.startsWith("vmess")) {
         function base64ToBytes(base64) {
             const binString = atob(base64);
             return Uint8Array.from(binString, (m) => m.codePointAt(0));
         }
         const o = JSON.parse(new TextDecoder().decode(base64ToBytes(n.substring(8))))
-        // console.log(o);
 
         n = o["ps"]
     }
@@ -125,7 +108,7 @@ function saveSubcription() {
         confirmButtonText: 'OK',
         callback: (action) => {
             if (action == 'confirm') {
-                axios.post(`${apiPrefix}/subcription/${origin.value}`, Array.from(nodeUrlSet.value), {
+                axios.post(`${apiPrefix}/subcription/${selectedToken.value}`, Array.from(nodeUrlSet.value), {
                     headers: { "Authorization": auth.value, "Content-Type": "application/json" }
                 }).then(r => ElMessage.success(`成功保存 ${nodeUrlSet.value.size} 个结点`)).catch(e => ElMessage.error(e))
             } else {
@@ -140,7 +123,7 @@ function deleteNodeUrl(nodeUrl) {
 }
 
 function copyNodeUrl(nodeUrl) {
-    cacheStatusPromise(nodeUrl, navigator.clipboard.writeText(nodeUrl).then(() => "copied"))
+    setGlobleStatus(nodeUrl, navigator.clipboard.writeText(nodeUrl).then(() => "copied"))
 }
 
 function copyAll() {
@@ -148,8 +131,8 @@ function copyAll() {
 }
 
 function checkSubUrl(url) {
-    window.open(url, "_blank")
-    status.set(url, "tested")
+    window.open(url.replace("sub64://", ""), "_blank")
+    globleStatus.set(url, "tested")
     // cacheStatusPromise(url, axios.get(url).then(r => r.data)) // need CORS
 }
 </script>
